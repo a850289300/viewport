@@ -4,7 +4,7 @@
             <div class="none-img">！这里是张图片</div>
             <div class="none-content">请选择一副个人作品，开始创作</div>
             <van-button color="" native-type="file" @click="uploadFileClick" round type="primary" size="mini">上传作品</van-button>
-            <input type="file" style="display: none;" @change="uploadChange" class="file-select"></input>
+            <input type="file" style="display: none;" @change="uploadChange" class="file-select"/>
         </div>
 
         <van-popup v-model="popup" :close-on-click-overlay="false" :round="true">
@@ -35,82 +35,85 @@
 export default {
     data() {
         return {
-            popup: true, // 弹框
+            popup: false, // 弹框
             name: '',
-            cos: null
+            cos: null,
+            Bucket: 'tzzhou-1252085270', /* 存储桶 */
+            Region: 'ap-shanghai'  /* 存储桶所在地域，必须字段 */
             // show: true,
             // value: ''
         }
     },
     mounted () {
-        this.getCos()
+        
     },
-    continueAction () {
+    methods : {
+        continueAction () {
 
-    },
-    confirm () {
+        },
+        confirm () {
 
-    },
-    exit () {
+        },
+        exit () {
 
-    },
-    getCos () {
-        this.$http('https://pre.qpet.eilandtek.com/api/v1/util/cos', {
-            params: {
-                Clinet: 'WALLE'
-            }
-        }).then (res => {
-            console.log(res)
-            // 下面内容要用res里的值替换掉
-            const Bucket = 'examplebucket-1250000000';  /* 存储桶 */
-            const Region = 'ap-beijing';  /* 存储桶所在地域，必须字段 */
-            // SecretId 和 SecretKey请登录 https://console.cloud.tencent.com/cam/capi 进行查看和管理
-            this.cos = new COS({
-                SecretId: res.credentials.tmpSecretId,
-                SecretKey: res.credentials.tmpSecretKey,
+        },
+        getCos () {
+            this.$http.get('/api/v1/util/cos', {
+                headers: {
+                    Client: 'WALLE'
+                }
+            }).then (res => {
+                console.log(res)
+                /* eslint-disable */
+                this.cos = new COS({
+                    SecretId: res.data.credentials.tmpSecretId,
+                    SecretKey: res.data.credentials.tmpSecretKey,
+                });
+            }).catch (() => {
+                console.error('获取cos失败')
+            })
+        },
+        // 上传文件
+        uploadFileClick() {
+            this.getCos();
+            document.querySelectorAll('.file-select')[0].click();
+        },
+        // 上传
+        uploadChange(events) {
+            const files = events.currentTarget.files;
+            const uploadFileList = [...files].map((file) => {
+                const path = file.webkitRelativePath || file.name;
+                return {
+                Bucket: this.Bucket,
+                Region: this.Region,
+                Key: path,
+                Body: file,
+                }
             });
-        }).catch (err => {
-            console.error('获取cos失败')
-        })
-    },
-    // 上传文件
-    uploadFileClick() {
-        document.querySelectorAll('.file-select')[0].click();
-    },
-    // 上传
-    uploadChange(events) {
-        const files = events.currentTarget.files;
-        const uploadFileList = [...files].map((file) => {
-            const path = file.webkitRelativePath || file.name;
-            return {
-            Bucket,
-            Region,
-            Key: this.Prefix + path,
-            Body: file,
-            }
-        });
-        this.cos.uploadFiles({
-            files: uploadFileList,
-            SliceSize: 1024 * 1024 * 10,    /* 设置大于10MB采用分块上传 */
-            onProgress: function (info) {
-                var percent = parseInt(info.percent * 10000) / 100;
-                var speed = parseInt(info.speed / 1024 / 1024 * 100) / 100;
-                console.log('进度：' + percent + '%; 速度：' + speed + 'Mb/s;');
-            },
-            onFileFinish: function (err, data, options) {
-                console.log(options.Key + '上传' + (err ? '失败' : '完成'));
-            },
-        }, (err, data) => {
-            if (err) {
-            console.log('上传失败', err);
-            return;
-            }
-            // 刷新列表前初始化
-            this.hasMore = false;
-            this.Marker = '';
-            this.getFileList();
-        });
+            this.cos.uploadFiles({
+                files: uploadFileList,
+                SliceSize: 1024 * 1024 * 10,    /* 设置大于10MB采用分块上传 */
+                onProgress: function (info) {
+                    var percent = parseInt(info.percent * 10000) / 100;
+                    var speed = parseInt(info.speed / 1024 / 1024 * 100) / 100;
+                    console.log('进度：' + percent + '%; 速度：' + speed + 'Mb/s;');
+                },
+                onFileFinish: function (err, data, options) {
+                    console.log(options.Key + '上传' + (err ? '失败' : '完成'));
+                },
+            }, (err,) => {
+                if (err) {
+                console.log('上传失败', err);
+                return;
+                }
+                // 刷新列表前初始化
+                this.hasMore = false;
+                this.Marker = '';
+                // this.getFileList();
+            });
+        }
     }
+    
 }
 </script>
 <style lang="less">

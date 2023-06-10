@@ -36,5 +36,16 @@ module.exports = {
             '#': resolve('assets')
         }
     }
+  },
+  devServer: {
+    proxy: {
+      '^/api/': {
+        changeOrigin: true, 
+        target: 'https://pre.qpet.eilandtek.com/api/',
+        pathRewrite: {
+          '^/api/': ''
+        }
+      }
+    }
   }
 };
