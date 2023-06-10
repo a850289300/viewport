@@ -38,10 +38,11 @@ export default {
             popup: false, // 弹框
             name: '',
             cos: null,
-            Bucket: 'tzzhou-1252085270', /* 存储桶 */
-            Region: 'ap-shanghai'  /* 存储桶所在地域，必须字段 */
+            Bucket: 'pre-wall-e-1253017550', /* 存储桶 */
+            Region: 'ap-nanjing',  /* 存储桶所在地域，必须字段 */
             // show: true,
-            // value: ''
+            // value: '',
+            list: null
         }
     },
     mounted () {
@@ -66,8 +67,16 @@ export default {
                 console.log(res)
                 /* eslint-disable */
                 this.cos = new COS({
-                    SecretId: res.data.credentials.tmpSecretId,
-                    SecretKey: res.data.credentials.tmpSecretKey,
+                    getAuthorization: function (options, callback) {
+                        callback ({
+                            TmpSecretId: res.data.credentials.tmpSecretId,
+                            TmpSecretKey: res.data.credentials.tmpSecretKey,
+                            SecurityToken: res.data.credentials.sessionToken,
+                            StartTime: res.data.startTime,
+                            ExpiredTime: res.data.expiredTime
+                        })
+                    }
+                    
                 });
             }).catch (() => {
                 console.error('获取cos失败')
@@ -90,6 +99,7 @@ export default {
                 Body: file,
                 }
             });
+            console.log(this.cos)
             this.cos.uploadFiles({
                 files: uploadFileList,
                 SliceSize: 1024 * 1024 * 10,    /* 设置大于10MB采用分块上传 */
@@ -109,12 +119,11 @@ export default {
                 // 刷新列表前初始化
                 this.hasMore = false;
                 this.Marker = '';
-                // this.getFileList();
             });
         }
     }
-    
 }
+    
 </script>
 <style lang="less">
 .create-index {
