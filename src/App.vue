@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <narBar></narBar>
-    <router-view />
+    <router-view class="content"/>
   </div>
 </template>
 
@@ -19,5 +19,8 @@ body {
   font-size: 16px;
   background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
+}
+.content{
+  height: calc(100vh - 46px);
 }
 </style>

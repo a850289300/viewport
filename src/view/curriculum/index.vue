@@ -1,24 +1,25 @@
 <template>
     <div class="curriculum-index">
-        <div class="curriculum-picture"></div>
+        <div class="curriculum-picture">
+            <!-- 做在图片上比较好 -->
+            <span v-if="false" class="start">进入学习</span>
+        </div>
         <div class="curriculum-info">
             <div class="base-info">
-                <span class="course-name">{{courseName}}</span>
-                <span class="teacher-name">授课老师：{{teacherName}}</span>
-            </div>
-            <div class="chapter-info">
                 <span class="chapter-count">已更新{{chaptersCount}}章</span>
                 <span class="chapter-current">已学习到第{{currentChapter}}章</span>
+                <span class="teacher-name">授课老师：{{teacherName}}</span>
             </div>
             <div class="chapter-info">
                 <span>课程时间：{{courseTime}}</span>
             </div>
         </div>
+        <div class="curriculum-tab">时光轴</div>
         <div class="curriculum-time-axis">
             <van-steps direction="vertical" :active="list.length - 1">
                 <van-step v-for="(item, index) in list" :key="index">
                   <div class="list-item">
-                    <img :src="item.src">
+                    <img :src="item.src || require('@/asset/image/decoration/1/test2.png')">
                     <div class="list-item-info">
                         <p>{{item.time}}</p>
                         <p><span class="keynote">{{item.operation}}</span>了{{item.worksType}}《{{item.worksName}}》</p>
@@ -28,8 +29,8 @@
             </van-steps>
         </div>
         <div class="curriculum-btn">
-            <van-button class="btn-works" @touchstart="toWorks">作品集</van-button>
-            <van-button class="btn-create" @touchstart="toCreate">动态创作</van-button>
+            <span class="btn-works" @click="toWorks">作品集</span>
+            <span class="btn-works" @click="toCreate">动态创作</span>
         </div>
     </div>
 </template>
@@ -152,48 +153,93 @@ export default {
 </script>
 <style lang="less">
 .curriculum-index {
-    height: calc(100vh - 46px);
-    padding: 1vh 2vw;
+    // height: calc(100vh - 46px);
     box-sizing: border-box;
+    background: #f5f5f5;
     .curriculum-picture {
-        height: 16vh;
-        width: 96vw;
+        height: 200px;
+        width: 100%;
         margin: 0 auto;
-        border-radius: 10px;
-        background: #f2f2f2;
+        background: url('../../asset/image/decoration/1/test.png');
+        background-size: 100% 100%;
+        .start{
+            display: block;
+            width: 30vw;
+            height: 30px;
+            line-height: 30px;
+            background: #40d19a;
+            color: #fff;
+            margin: 0 auto;
+        }
     }
     .curriculum-info {
-        margin-top: 1vh;
+        padding: 2px 20px;
         font-size: 13px;
+        background: #f5f5f5;
+        height:60px;
         .base-info {
             .course-name {
 
             }
             .teacher-name {
-                color: #ccc;
+                color: #b1b1b1;
                 float: right;
             }
-        }
-        .chapter-info {
             margin-top: 1vh;
             .chapter-count {
-                color: #ccc;
+                color: #333;
+                font-size: 15px;
             } 
             .chapter-current {
                 margin-left: 20px;
-                color: #409EFF;
+                color: #f2937c;
             }
         }
         .chapter-info {
-            margin-top: 1vh;
+            margin-top: 5px;
             color: #ccc;
         }
     }
+    .curriculum-tab{
+        height: 20px;
+        line-height: 20px;
+        padding: 15px 0 0 0; 
+        background: #f5f5f5;
+        &:before{
+            float: left;
+            content: '';
+            width: 3px;
+            height: 20px;
+            background: #47d292;
+            margin-right: 10px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+
+        }
+    }
     .curriculum-time-axis {
-        margin-top: 1vh; 
-        height: 50vh;
         overflow-y: auto;
+        height: calc(100% - 330px);
+        /deep/.van-steps{
+            background: transparent;
+            .van-step__title{
+                background: #ffffff;
+                padding:15px;
+                border-radius: 5px;
+            }
+            .van-step__circle-container{
+                top: 50px;
+                .van-step__circle{
+                    background: #fe724e;
+                }
+            }
+            .van-step__line{
+                top: 50px;
+                background: #e3e3e3;
+            }
+        }
         .list-item {
+            height: 60px;
             img {
                 width: 60px;
                 height: 60px;
@@ -207,7 +253,7 @@ export default {
                     color: #000;
                 }
                 .keynote {
-                    color: red;
+                    // color: red;
                 }
             }
         }
@@ -216,27 +262,24 @@ export default {
         text-align: center;
         font-size: 16px;
         margin-top: 1vh;
+        position: fixed;
+        bottom: 40px;
+        width: 100%;
         .btn-works {
-            background-color: #f0f7ff;
-            color: #409EFF;
+            background: linear-gradient(to right,#53d485,#29cfb8);;
+            color: #fff;
             border-radius: 5px;
-            border: 1px solid #409EFF;
-            &:active {
-                background: #409EFF;
-                color: #fff;
-            }
+            display: inline-block;
+            width: 40%;
+            margin: 0 5%;
+            line-height: 40px;
+            border-radius: 20px;
+            // &:active {
+            //     background: #409EFF;
+            //     color: #fff;
+            // }
         }
-        .btn-create {
-            margin-left: 20px; 
-            background-color: #fff7eb;
-            color: rgb(255, 153, 0);
-            border-radius: 5px;
-            border: 1px solid #FF9900;
-            &:active {
-                background: #FF9900;
-                color: #fff;
-            }
-        }
+
     }
 }
 </style>
