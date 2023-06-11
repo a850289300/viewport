@@ -1,6 +1,6 @@
 <template>
     <div class="curriculum-index">
-        <div class="curriculum-picture">
+        <div class="curriculum-picture" @click="$router.push('/map')">
             <!-- 做在图片上比较好 -->
             <span v-if="false" class="start">进入学习</span>
         </div>
@@ -146,7 +146,10 @@ export default {
         },
         // 去创作
         toCreate() {
-            this.$router.push('/create')
+            
+            this.$router.push('/timeaxis')
+
+            // this.$router.push('/create')
         }
     }
 }
