@@ -40,7 +40,7 @@
                     <van-field v-model="name" class="popus-input" placeholder="请输入作品名称" />
                 </div>
                 <div class="popup-bottom">
-                    <van-button plain type="info" class="popus-btn" @touchstart="confirm">确认</van-button>
+                    <span class="btn popus-btn" @touchstart="confirm">确认</span>
                     <span class="popup-exit" @touchstart="exit">取消并退出</span>
                 </div>
             </div>
@@ -455,34 +455,47 @@ export default {
   .van-share-sheet__option{
     flex: 1;
   }
+  .van-popup{
+    border-radius: 10px;
+  }
   .popup-modal {
-    width: 80vw;
-    height: 60vw;
+    width: 295px;
+    height: 229px;
     .popup-top {
-      padding: 20px;
+      padding: 26px 24px 22px 24px;
       border: 1px solid #f1f1f1;
       .popus-input {
+        width: 247px;
+        height: 58px;
+        padding: 15px 18px;
         background: #f6f9fd;
         border-radius: 5px;
+      }
+      .van-field__body{
+        height: 28px;
+        line-height: 28px;
       }
     }
     .popup-bottom {
       padding: 20px;
+      text-align: center;
       .popus-btn {
-        width: 100%;
-        background: linear-gradient(to right, #52d484, #29cfb8);
+        width: 235px;
+        height: 40px;
+        margin-left: 0;
         border: none;
         color: #fff;
         border-radius: 20px;
       }
       .popup-exit {
         display: block;
+        font-size: 11px;
         font-size: 12px;
         color: #999;
         text-align: center;
         width: 100%;
         cursor: pointer;
-        margin-top: 20px;
+        margin-top: 25px;
       }
     }
   }
