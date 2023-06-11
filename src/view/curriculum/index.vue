@@ -16,9 +16,9 @@
         </div>
         <div class="curriculum-tab">时光轴</div>
         <div class="curriculum-time-axis">
-            <van-steps direction="vertical" :active="list.length - 1">
-                <van-step v-for="(item, index) in list" :key="index">
-                  <div class="list-item">
+            <van-steps direction="vertical" :active="list.length - 1" >
+                <van-step v-for="(item, index) in list" :key="index" >
+                  <div class="list-item" @click="show = true">
                     <img :src="item.src || require('@/asset/image/icon/test2.png')">
                     <div class="list-item-info">
                         <p>{{item.time}}</p>
@@ -32,9 +32,20 @@
             <span class="btn btn-works" @click="toWorks">作品集</span>
             <span class="btn btn-works" @click="toCreate">动态创作</span>
         </div>
+        <!-- 弹框 -->
+        <van-popup v-model="show">
+            <popup-title/>
+            <p class="title">小小宇航员</p>
+            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
+            <span class="btn-small" @click="save">保存相册</span>
+            <popup-share class="share"/>
+        </van-popup>
     </div>
 </template>
 <script>
+import popupTitle from '@/view/common/popupTitle.vue';
+import popupShare from '@/view/common/popupShare.vue';
+
 export default {
     data() {
         return {
@@ -43,6 +54,7 @@ export default {
             chaptersCount: 5, // 章节数
             currentChapter: 1, // 当前章节
             courseTime: '2023-07-01 ~ 2023-09-01',
+            show: false,
             list: [
                 {
                     src: '', // 图片地址
@@ -139,6 +151,10 @@ export default {
             ], // 时间轴数据列表
         }
     },
+    components:{
+        popupTitle,
+        popupShare
+    },
     methods: {
         // 去作品集
         toWorks() {
@@ -146,15 +162,16 @@ export default {
         },
         // 去创作
         toCreate() {
-            
             this.$router.push('/timeaxis')
-
             // this.$router.push('/create')
+        },
+        save(){
+            
         }
     }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .curriculum-index {
     background: #f5f5f5;
     .curriculum-picture {
@@ -305,5 +322,36 @@ export default {
         }
 
     }
+}
+.van-popup{
+    height: 100vh;
+    width: 100vw;
+    background: transparent;
+    .van-image{
+        left: 50%;
+        transform: translateX(-50%);
+        
+    }
+    .title{
+        text-align: center;
+        height: 22px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #FFFFFF;
+        line-height: 22px;
+        margin-top: 25px;
+        margin-bottom: 40px;
+
+    }
+    .btn-small{
+        width: 248px;
+        margin-left: 64px;
+        margin-top: 46px;
+
+    }
+}
+.share{
+    position: fixed;
+    bottom: 69px;
 }
 </style>

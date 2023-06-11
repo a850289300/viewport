@@ -9,7 +9,7 @@
         </div>
         <van-image-preview v-model="show" :images="images" showIndicators className="preview">
             <template v-slot:index>
-                <span>{{currentTemplate.name}}</span>
+                {{currentTemplate.name}}
             </template>
             <template v-slot:cover>
                 <span class="btn bth-tran" @click="cancle">取消</span>
@@ -156,10 +156,11 @@ export default {
     }
     .van-image-preview__index {
       top: 76px;
+      height: 22px;
       font-size: 16px;
       font-weight: 400;
       color: #FFFFFF;
-      line-height: 0px;
+      line-height: 22px;
     }
   }
 }
