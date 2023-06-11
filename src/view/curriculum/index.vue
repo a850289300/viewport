@@ -157,7 +157,7 @@ export default {
     box-sizing: border-box;
     background: #f5f5f5;
     .curriculum-picture {
-        height: 200px;
+        height: 174px;
         width: 100%;
         margin: 0 auto;
         background: url('../../asset/image/decoration/1/test.png');
@@ -173,11 +173,13 @@ export default {
         }
     }
     .curriculum-info {
-        padding: 2px 20px;
+        padding: 9px 16px 27px 16px;
         font-size: 13px;
         background: #f5f5f5;
-        height:60px;
         .base-info {
+            margin-top: 0 !important;
+            height: 22px;
+            line-height: 22px;
             .course-name {
 
             }
@@ -192,19 +194,22 @@ export default {
             } 
             .chapter-current {
                 margin-left: 20px;
-                color: #f2937c;
+                color: #F15B38;
             }
         }
         .chapter-info {
-            margin-top: 5px;
+            margin-top: 1px;
+            height: 17px;
+            line-height: 17px;
             color: #ccc;
+            font-size: 12px;
         }
     }
     .curriculum-tab{
         height: 20px;
         line-height: 20px;
-        padding: 15px 0 0 0; 
         background: #f5f5f5;
+        margin-bottom: 10px;
         &:before{
             float: left;
             content: '';
@@ -219,38 +224,62 @@ export default {
     }
     .curriculum-time-axis {
         overflow-y: auto;
-        height: calc(100% - 330px);
+        height: calc(100% - 280px);
+        
         /deep/.van-steps{
             background: transparent;
+            padding-bottom: 80px;
             .van-step__title{
                 background: #ffffff;
-                padding:15px;
+                padding:10px;
+                height: 68px;
                 border-radius: 5px;
             }
             .van-step__circle-container{
                 top: 50px;
                 .van-step__circle{
                     background: #fe724e;
+                    width: 6px;
+                    height: 6px;
                 }
             }
             .van-step__line{
+                width: 2px;
                 top: 50px;
                 background: #e3e3e3;
+                left: -16px;
+            }
+            .van-step--vertical{
+                padding: 8px 16px 8px 7px;
+            }
+            .van-step:last-child{
+                .van-step__line{
+                    display: none;
+                }
             }
         }
         .list-item {
-            height: 60px;
             img {
-                width: 60px;
-                height: 60px;
+                width: 68px;
+                height: 68px;
                 border-radius: 5px;
             }
             .list-item-info {
                 display: inline-block;
                 vertical-align: top;
                 p {
-                    padding: 5px 10px;
-                    color: #000;
+                    padding: 0 10px;
+                    color: #666666;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+                p:first-child{
+                    height: 37px;
+                    padding-top: 8px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: #333;
+
                 }
                 .keynote {
                     // color: red;
@@ -261,23 +290,22 @@ export default {
     .curriculum-btn {
         text-align: center;
         font-size: 16px;
-        margin-top: 1vh;
         position: fixed;
-        bottom: 40px;
+        bottom: 25px;
         width: 100%;
         .btn-works {
             background: linear-gradient(to right,#53d485,#29cfb8);;
             color: #fff;
             border-radius: 5px;
             display: inline-block;
-            width: 40%;
-            margin: 0 5%;
-            line-height: 40px;
+            width: 156px;
+            margin-left: 27px;
+            line-height: 44px;
             border-radius: 20px;
-            // &:active {
-            //     background: #409EFF;
-            //     color: #fff;
-            // }
+            float: left;
+            &:first-child{
+                margin-left: 18px;
+            }
         }
 
     }
