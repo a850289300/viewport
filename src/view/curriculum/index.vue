@@ -19,7 +19,7 @@
             <van-steps direction="vertical" :active="list.length - 1">
                 <van-step v-for="(item, index) in list" :key="index">
                   <div class="list-item">
-                    <img :src="item.src || require('@/asset/image/decoration/1/test2.png')">
+                    <img :src="item.src || require('@/asset/image/icon/test2.png')">
                     <div class="list-item-info">
                         <p>{{item.time}}</p>
                         <p><span class="keynote">{{item.operation}}</span>了{{item.worksType}}《{{item.worksName}}》</p>
@@ -153,14 +153,12 @@ export default {
 </script>
 <style lang="less">
 .curriculum-index {
-    // height: calc(100vh - 46px);
-    box-sizing: border-box;
     background: #f5f5f5;
     .curriculum-picture {
         height: 174px;
         width: 100%;
         margin: 0 auto;
-        background: url('../../asset/image/decoration/1/test.png');
+        background: url('../../asset/image/icon/test.png');
         background-size: 100% 100%;
         .start{
             display: block;

@@ -37,7 +37,6 @@ export default {
     position: relative;
     text-align: center;
     width: 100%;
-    height:calc(100vh - 46px);
     .bg{
         position: absolute;
         left:0;

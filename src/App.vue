@@ -24,5 +24,7 @@ body {
 }
 .content{
   height: calc(100vh - 46px);
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 </style>

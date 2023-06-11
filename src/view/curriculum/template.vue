@@ -67,7 +67,6 @@ export default {
 </script>
 <style lang="less">
 .template-container {
-  height: calc(100vh - 46px);
   .van-search{
     padding: 12px 16px 20px 16px;
   }
