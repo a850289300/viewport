@@ -12,8 +12,8 @@
                 <span>{{currentTemplate.name}}</span>
             </template>
             <template v-slot:cover>
-                <van-button plain type="info" @click="cancle">取消</van-button>
-                <van-button plain type="info" @click="select" style="margin-left: 10vw;">选定</van-button>
+                <span class="btn bth-tran" @click="cancle">取消</span>
+                <span class="btn " @click="select">选定</span>
             </template>
         </van-image-preview>
     </div>
@@ -75,11 +75,14 @@ export default {
     height: 50px;
     border-radius: 10px;
     line-height: 50px;
-    padding-top: 7px;
+    padding-top: 13px;
     box-sizing: border-box;
   }
   .van-field__left-icon{
     margin-right: 11px;
+  }
+  .van-cell{
+    padding: 0;
   }
   .van-icon-search{
     &::before{
@@ -119,20 +122,32 @@ export default {
     }
   }
   .van-image-preview__cover {
-    bottom: 15vh;
+    width: 100%;
+    height: 40px;
+    position: fixed;
     top: auto;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 137px;
   }
   .preview {
     .van-image-preview__image {
-      width: 70vw;
+      width: 269px;
+      height: 478px;
       position: absolute;
       height: auto;
       margin: 0 auto;
       background: #fff;
       border-radius: 2.66667vw;
-      top: 10vh;
+      top: 107px;
+    }
+    .btn{
+      width: 123px;
+      margin-left: 23px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 15px;
+      &:first-child{
+        margin-left: 53px;
+      }
     }
     .van-image__img {
       border-radius: 10px;
@@ -141,7 +156,11 @@ export default {
       bottom: 26vh;
     }
     .van-image-preview__index {
-      top: calc(10vh - 30px);
+      top: 76px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #FFFFFF;
+      line-height: 0px;
     }
   }
 }

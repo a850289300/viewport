@@ -29,8 +29,8 @@
             </van-steps>
         </div>
         <div class="curriculum-btn">
-            <span class="btn-works" @click="toWorks">作品集</span>
-            <span class="btn-works" @click="toCreate">动态创作</span>
+            <span class="btn btn-works" @click="toWorks">作品集</span>
+            <span class="btn btn-works" @click="toCreate">动态创作</span>
         </div>
     </div>
 </template>
@@ -294,14 +294,9 @@ export default {
         bottom: 25px;
         width: 100%;
         .btn-works {
-            background: linear-gradient(to right,#53d485,#29cfb8);;
-            color: #fff;
-            border-radius: 5px;
-            display: inline-block;
+           
             width: 156px;
             margin-left: 27px;
-            line-height: 44px;
-            border-radius: 20px;
             float: left;
             &:first-child{
                 margin-left: 18px;

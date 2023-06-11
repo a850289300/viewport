@@ -14,7 +14,9 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="less">
+@import '../assets/styles/common.less';
+
 body {
   font-size: 16px;
   background-color: #ffffff;
