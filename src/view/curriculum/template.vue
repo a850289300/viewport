@@ -1,12 +1,12 @@
 <template>
     <div class="template-container">
-        <van-search v-model="searchVal" @search="search"  @clear="clear" placeholder="请输入搜索关键词" shape="round" left-icon="" right-icon="search" background=""></van-search>
-        <van-grid :gutter="20" :column-num="2" class="list-container" :border=false>
-            <van-grid-item v-for="(item, index) in templateList" :key="index" :clickable=true @click="previewImage(item)">
-                <van-image :src="item.src" radius="20"/>
-                <span class="template-name">{{item.name}}</span>
-            </van-grid-item>
-        </van-grid>
+        <van-search v-model="searchVal" @search="search"  @clear="clear" placeholder="请输入搜索关键词" shape="round" left-icon="search"  background=""></van-search>
+        <div class="list-container">
+          <div class="list-item" v-for="(item, index) in templateList" :key="index" :clickable=true @click="previewImage(item)">
+            <van-image :src="item.src" radius="10"  width="160" height="284"/>
+            <p class="template-name">{{item.name}}</p>
+          </div>
+        </div>
         <van-image-preview v-model="show" :images="images" showIndicators className="preview">
             <template v-slot:index>
                 <span>{{currentTemplate.name}}</span>
@@ -68,13 +68,54 @@ export default {
 <style lang="less">
 .template-container {
   height: calc(100vh - 46px);
+  .van-search{
+    padding: 12px 16px 20px 16px;
+  }
+  .van-search__content{
+    height: 50px;
+    border-radius: 10px;
+    line-height: 50px;
+    padding-top: 7px;
+    box-sizing: border-box;
+  }
+  .van-field__left-icon{
+    margin-right: 11px;
+  }
+  .van-icon-search{
+    &::before{
+      content: '';
+      display: inline-block;
+      width: 16px ;
+      height: 16px;
+    }
+    background: url('../../asset/image/icon/nav_icon_search@2x.png') no-repeat center center;
+    background-size: 16px 16px;
+  }
+  /deep/.van-icon-clear{
+    padding-right: 17px;
+  }
   .list-container {
-    padding: 1vh 0;
-    max-height: calc(100vh - 100px);
+    padding: 0 16px;
+    max-height: calc(100vh - 128px);
     box-sizing: border-box;
     overflow-y: auto;
+    .list-item{
+      width: 160px;
+      float: left;
+      height: 334px;
+      &:nth-child(2n + 1){
+        margin-right: 23px;
+      }
+    }
     .template-name {
+      padding-top: 8px;
+      padding-bottom: 22px;
       font-size: 14px;
+      height: 20px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 0px;
+      text-align: center;
     }
   }
   .van-image-preview__cover {
