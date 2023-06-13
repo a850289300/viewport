@@ -172,6 +172,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import './popup.less';
 .curriculum-index {
     background: #f5f5f5;
     .curriculum-picture {
@@ -323,35 +324,10 @@ export default {
 
     }
 }
-.van-popup{
-    height: 100vh;
-    width: 100vw;
-    background: transparent;
-    .van-image{
-        left: 50%;
-        transform: translateX(-50%);
-        
-    }
-    .title{
-        text-align: center;
-        height: 22px;
-        font-size: 16px;
-        font-weight: 400;
-        color: #FFFFFF;
-        line-height: 22px;
-        margin-top: 25px;
-        margin-bottom: 40px;
 
-    }
-    .btn-small{
-        width: 248px;
-        margin-left: 64px;
-        margin-top: 46px;
-
-    }
-}
 .share{
     position: fixed;
     bottom: 69px;
 }
+
 </style>

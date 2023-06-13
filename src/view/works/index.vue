@@ -1,5 +1,9 @@
 <template>
     <div class="works-container">
+        <div class="tool">
+          <span class="save"></span>
+          <span class="more"></span>  
+        </div>
         <div class="swipe-box" :style="{width: width + 'px', height: height + 'px'}">
             <van-swipe @change="changeIndex" :initial-swipe="currentIndex" :touchable="operationType !== 'personality'">
                 <van-swipe-item v-for="(image, index) in imgList" :key="index">
@@ -9,8 +13,10 @@
                 </van-swipe-item>
             </van-swipe>
         </div>
-        <!-- :style="{width: width + 'px'}" -->
+        <!-- :style="{width: width + 'px'}" --> 
+        <span class="preview-box-left">1/10</span>
         <div class="preview-box" v-if="operationType === 'edit'">
+            
             <span v-for="(image, index) in imgList" :key="index" style="position: relative">
               <img :src="image" class="preview-img" @click="changeIndex(index)">
               <span v-if="index === currentIndex" class="active-preview-img"></span>
@@ -26,7 +32,7 @@
           </van-tabs>
         </div>
         <!-- :style="{width: width + 'px'}" -->
-        <div class="operate-box">
+        <div class="operate-box" v-show="true">
           <span class="operate-box-item col-3" v-if="['personality','edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="save">保存</van-button></span>
           <span class="operate-box-item col-3" v-if="['personality'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="edit">编辑</van-button></span>
           <span class="operate-box-item col-3" v-if="['edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="individuation">个性化</van-button></span>
@@ -34,6 +40,12 @@
           <span class="operate-box-item col-2" v-if="['preview'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="saveAlbum">保存相册</van-button></span>
           <span class="operate-box-item col-2" v-if="['preview'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @click="share">分享</van-button></span>
         </div>
+        <div class="tab">
+          <span @click="tabType = 1" :class="{'active': tabType === 1}">作品集</span>
+          <span @click="tabType = 2" :class="{'active': tabType === 2}">作品</span>
+          <span @click="tabType = 3" :class="{'active': tabType === 3}">个性化</span>
+        </div>
+        <!-- 只输入作品名 -->
         <van-popup v-model="popup" :close-on-click-overlay="false" :round="true">
             <div class="popup-modal">
                 <div class="popup-top">
@@ -41,6 +53,21 @@
                 </div>
                 <div class="popup-bottom">
                     <span class="btn popus-btn" @touchstart="confirm">确认</span>
+                    <span class="popup-exit" @touchstart="exit">取消并退出</span>
+                </div>
+            </div>
+        </van-popup>
+        <!-- 输入作品名和姓名 年龄等 -->
+        <van-popup v-model="popup2" :close-on-click-overlay="false" :round="true">
+            <div class="popup-modal popup-modal2">
+                <div class="popup-top">
+                    <van-field v-model="name" class="popus-input" placeholder="请输入作品名称" />
+                    <van-field v-model="name" class="popus-input popus-input-name" placeholder="姓名" />
+                    <van-field v-model="name" class="popus-input popus-input-age" placeholder="年龄" />
+                    <van-field v-model="name" type="textarea" class="popus-input popus-input-intro" placeholder="个性签名" />
+                </div>
+                <div class="popup-bottom">
+                    <span class="btn popus-btn" @touchstart="popup2 = false">确认</span>
                     <span class="popup-exit" @touchstart="exit">取消并退出</span>
                 </div>
             </div>
@@ -54,7 +81,9 @@ import { templateList, decoration } from "@/asset/config/index.js";
 export default {
   data() {
     return {
+      tabType:1, // 当前选中的tab
       popup: false, // 弹框
+      popup2: false, // 弹框
       name: "", // 作品名称
       canvas: {},
       scaleX: 1,
@@ -222,6 +251,7 @@ export default {
     // 确认
     confirm() {
       this.popup = false;
+      this.popup2 = true;
     },
     // 从缓存中获取数据
     getDataByCache() {
@@ -448,9 +478,11 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
+
+@import './index.less';
 .works-container {
-  height: calc(100vh - 46px);
+  height: calc(100vh - 46px - 50px);
   background: #F5F5F5;
   .van-share-sheet__option{
     flex: 1;
@@ -460,7 +492,7 @@ export default {
   }
   .popup-modal {
     width: 295px;
-    height: 229px;
+    // height: 229px;
     .popup-top {
       padding: 26px 24px 22px 24px;
       border: 1px solid #f1f1f1;
@@ -499,6 +531,24 @@ export default {
       }
     }
   }
+  .popup-modal2{
+    .popus-input{
+      &:nth-child(1){
+        margin-top: 0;
+      }
+      margin-top: 13px;
+      &.popus-input-name,&.popus-input-age{
+        width: 113px;
+        display: inline-block;
+      }
+      &.popus-input-age{
+        float: right;
+      }
+      &.popus-input-intro{
+        height: 100px;
+      }
+    }
+  }
   .swipe-box {
     position: relative;
     margin: 0 auto;
@@ -511,16 +561,30 @@ export default {
       right: 0;
     }
   }
+  .preview-box-left{
+    display: inline-block;
+    position: absolute;
+    width: 46px;
+    height: 75px;
+    background: #FAFAFA;
+    bottom: 61px;
+    left: 10px;
+    line-height: 75px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #333333;
+    text-align: center;
+  }
   .preview-box {
     position: absolute;
-    bottom: 4vh;
-    width: 100vw;
-    height: 12vh;
+    bottom: 61px;
+    width: calc(100vw - 74px);
+    left: 74px;
+    height: 75px;
     margin: 0 auto;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    padding-bottom: 10px;
     background: #FAFAFA;
     box-sizing: border-box;
     .preview-img {
@@ -539,7 +603,7 @@ export default {
   }
   .operate-box {
     position: absolute;
-    bottom: 0;
+    bottom: 250px;
     padding: 1vh 2vw;
     width: 100vw;
     background: #fff;

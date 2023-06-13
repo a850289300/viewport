@@ -3,7 +3,7 @@
         <div class="timeline-item" v-for="i in 10" :key="i">
             <div class="box img">
                 <img :src="require('@/asset/image/icon/test2.png')" alt="">
-                <span class="play"></span>
+                <span class="play" @click="toMap"></span>
             </div>
             
             <div class="box text">
@@ -15,7 +15,11 @@
 </template>
 <script>
 export default {
-    
+    methods:{
+        toMap(){
+            this.$router.push('/map')
+        }
+    }
 }
 </script>
 <style lang="less">

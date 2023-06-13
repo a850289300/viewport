@@ -3,7 +3,7 @@
         <van-search v-model="searchVal" @search="search"  @clear="clear" placeholder="请输入搜索关键词" shape="round" left-icon="search"  background=""></van-search>
         <div class="list-container">
           <div class="list-item" v-for="(item, index) in templateList" :key="index" :clickable=true @click="previewImage(item)">
-            <van-image :src="item.src" radius="10"  width="160" height="284"/>
+            <van-image :src="item.src" radius="10" />
             <p class="template-name">{{item.name}}</p>
           </div>
         </div>
@@ -93,6 +93,10 @@ export default {
     background: url('../../asset/image/icon/nav_icon_search@2x.png') no-repeat center center;
     background-size: 16px 16px;
   }
+  .van-image{
+    width: 160px;
+    height: 284px;
+  }
   /deep/.van-icon-clear{
     padding-right: 17px;
   }
@@ -124,8 +128,7 @@ export default {
     width: 100%;
     height: 40px;
     position: fixed;
-    top: auto;
-    bottom: 137px;
+    top: 635px;
   }
   .preview {
     .van-image-preview__image {
@@ -152,7 +155,7 @@ export default {
       border-radius: 10px;
     }
     .van-swipe__indicators {
-      bottom: 26vh;
+      top: 597px;
     }
     .van-image-preview__index {
       top: 76px;

@@ -1,0 +1,62 @@
+.tab{
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  span{
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+    background: url('../../asset/image/icon/list.png') no-repeat  center 6px;
+    background-size: 22px 22px;
+    font-size: 10px;
+    font-weight: normal;
+    color: #666666;
+    padding-top: 32px;
+    &.active{
+      background-image: url('../../asset/image/icon/list_h.png');
+      color: #1FB895;
+    }
+  }
+  span:nth-child(2){
+    background-image: url('../../asset/image/icon/color.png');
+    &.active{
+      background-image: url('../../asset/image/icon/color_h.png');
+    }
+  }
+  span:nth-child(3){
+    background-image: url('../../asset/image/icon/star.png');
+    &.active{
+      background-image: url('../../asset/image/icon/star_h.png');
+    }
+  }
+}
+
+.tool{
+  width: 94px;
+  height: 32px;
+  position: fixed;
+  right: 10px;
+  top: 56px;
+  z-index: 99;
+  .save{
+    display: inline-block;
+    width: 57px;
+    height: 32px;
+    background: url('../../asset/image/icon/save.png') no-repeat  center center;
+    background-size: 57px 32px;
+
+
+  }
+  .more{
+    display: inline-block;
+    width: 35px;
+    height: 32px;
+    background: url('../../asset/image/icon/more.png') no-repeat  center center;
+    background-size: 35px 32px;
+    float: right;
+
+
+  }
+}
