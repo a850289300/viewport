@@ -149,6 +149,22 @@ export const decoration = {
             {
                 id: '1-5',
                 src: require('@/asset/image/decoration/1/5.png')
+            },
+            {
+                id: '1-4',
+                src: require('@/asset/image/decoration/1/4.png')
+            },
+            {
+                id: '1-5',
+                src: require('@/asset/image/decoration/1/5.png')
+            },
+            {
+                id: '1-4',
+                src: require('@/asset/image/decoration/1/4.png')
+            },
+            {
+                id: '1-5',
+                src: require('@/asset/image/decoration/1/5.png')
             }
         ]
     },
@@ -157,15 +173,15 @@ export const decoration = {
         images: [
             {
                 id: '2-1',
-                src: require('@/asset/image/decoration/2/1.png')
+                src: require('@/asset/image/decoration/2/5.png')
             },
             {
                 id: '2-2',
-                src: require('@/asset/image/decoration/2/2.png')
+                src: require('@/asset/image/decoration/2/3.png')
             },
             {
                 id: '2-3',
-                src: require('@/asset/image/decoration/2/3.png')
+                src: require('@/asset/image/decoration/2/2.png')
             },
             {
                 id: '2-4',
@@ -173,8 +189,26 @@ export const decoration = {
             },
             {
                 id: '2-5',
-                src: require('@/asset/image/decoration/2/5.png')
+                src: require('@/asset/image/decoration/2/1.png')
             }
+        ]
+    },
+    3: {
+        name: '类型3',
+        images: [
+            {
+                id: '2-1',
+                src: require('@/asset/image/decoration/2/5.png')
+            },
+        ]
+    },
+    4: {
+        name: '类型4',
+        images: [
+            {
+                id: '2-1',
+                src: require('@/asset/image/decoration/2/5.png')
+            },
         ]
     },
 }

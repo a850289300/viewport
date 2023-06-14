@@ -13,23 +13,31 @@
                 </van-swipe-item>
             </van-swipe>
         </div>
-        <!-- :style="{width: width + 'px'}" --> 
-        <span class="preview-box-left">1/10</span>
-        <div class="preview-box" v-if="operationType === 'edit'">
-            
-            <span v-for="(image, index) in imgList" :key="index" style="position: relative">
-              <img :src="image" class="preview-img" @click="changeIndex(index)">
-              <span v-if="index === currentIndex" class="active-preview-img"></span>
-            </span>
-        </div>
-        <div class="source-box" v-if="operationType === 'personality'">
-          <van-tabs v-model="currentSource" swipeable>
-            <van-tab v-for="item in sourceMap" :title="item.name" :key="item.id">
+        <div class="operate">        
+          <!-- :style="{width: width + 'px'}" --> 
+          <span class="preview-box-left">
+            <p class="box box1" v-show="tabType === 1">1/10</p>
+            <p class="box box2" v-show="tabType === 2">1/10 <span class="upload">上传</span></p>
+            <p class="box box3" v-show="tabType === 3">装饰</p>
+          </span>
+          <!-- 作品和作品集 -->
+          <div class="preview-box" v-if="tabType === 1 || tabType === 2">
+              <span v-for="(image, index) in imgList" :key="index" style="position: relative">
+                <img :src="image" class="preview-img" @click="changeIndex(index)">
+                <span v-if="index === currentIndex" class="active-preview-img"></span>
+              </span>
+          </div>
+          <!-- 装饰 -->
+          <div class="source-box" v-if="tabType === 3">
+            <p class="tabs">
+              <span v-for="item in sourceMap" :key="item.id" class="tab-item" :class="{active:currentSource === item.id}" @click="currentSource = item.id">{{ item.name }}</span> 
+            </p>
+            <div v-show="currentSource === item.id" class="preview-box" v-for="item in sourceMap" :title="item.name" :key="item.id">
               <span v-for="(image, index) in decorationMap[item.id].images" :key="index" class="source-item">
                 <img :src="image.src" class="preview-img" @touchstart="addDecoration(image.src)">
               </span>
-            </van-tab>
-          </van-tabs>
+            </div>
+          </div>
         </div>
         <!-- :style="{width: width + 'px'}" -->
         <div class="operate-box" v-show="true">
@@ -103,18 +111,18 @@ export default {
           name: '类型一',
           id: 1
         },
-        // {
-        //   name: '类型二',
-        //   id: 2
-        // },
-        // {
-        //   name: '类型三',
-        //   id: 3
-        // },
-        // {
-        //   name: '类型四',
-        //   id: 4
-        // },
+        {
+          name: '类型二',
+          id: 2
+        },
+        {
+          name: '类型三',
+          id: 3
+        },
+        {
+          name: '类型四',
+          id: 4
+        },
         // {
         //   name: '类型五',
         //   id: 5
@@ -480,6 +488,7 @@ export default {
 </script>
 <style lang="less" scoped>
 
+
 @import './index.less';
 .works-container {
   height: calc(100vh - 46px - 50px);
@@ -574,6 +583,31 @@ export default {
     font-weight: 500;
     color: #333333;
     text-align: center;
+    .box::after{
+      content: '';
+      display: inline-block;
+      height: 75px;
+      width: 0px;
+      border-right:1px dotted #ccc ;
+      position: absolute;
+      right: -9px;
+    }
+    .box2{
+      line-height: 63px;
+    }
+    .upload{
+        display: inline-block;
+        width: 40px;
+        height: 15px;
+        line-height: 15px;
+        background: rgb(73, 211, 145);
+        color: #fff;
+        font-size: 10px;
+        border-radius: 7px;
+        position: absolute;
+        top:41px;
+        left: 3px;
+    }
   }
   .preview-box {
     position: absolute;
@@ -627,11 +661,53 @@ export default {
     .source-item {
       display: inline-block;
       position: relative;
-      width: 20vw;
+      width: 62px;
+      height: 75px;
+      .preview-img {
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        left: 50%;
+        
+      }
     }
     .van-tabs__content {
       padding: 1vh 0;
     }
   }
 }
+.operate{
+  height: 103;
+  background: #fff;
+}
+.tabs{
+  padding-top: 10px;
+  padding-bottom: 13px;
+  background: #fff;
+  .tab-item{
+    margin: 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    &.active{
+      color: #333333;
+      position: relative;
+      
+      &::before{
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 20px;
+        height: 3px;
+        background: #1FB895;
+        border-radius: 3px;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
+}
+
 </style>
