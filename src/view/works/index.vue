@@ -13,12 +13,12 @@
                 </van-swipe-item>
             </van-swipe>
         </div>
-        <div class="operate">        
+        <div class="operate" :class="'operate' + tabType">        
           <!-- :style="{width: width + 'px'}" --> 
           <span class="preview-box-left">
             <p class="box box1" v-show="tabType === 1">1/10</p>
             <p class="box box2" v-show="tabType === 2">1/10 <span class="upload">上传</span></p>
-            <p class="box box3" v-show="tabType === 3">装饰</p>
+            <p class="box box3" v-show="tabType === 3">素<br/>材</p>
           </span>
           <!-- 作品和作品集 -->
           <div class="preview-box" v-if="tabType === 1 || tabType === 2">
@@ -48,7 +48,7 @@
           <span class="operate-box-item col-2" v-if="['preview'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="saveAlbum">保存相册</van-button></span>
           <span class="operate-box-item col-2" v-if="['preview'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @click="share">分享</van-button></span>
         </div>
-        <div class="tab">
+        <div class="foot-tab">
           <span @click="tabType = 1" :class="{'active': tabType === 1}">作品集</span>
           <span @click="tabType = 2" :class="{'active': tabType === 2}">作品</span>
           <span @click="tabType = 3" :class="{'active': tabType === 3}">个性化</span>
@@ -576,13 +576,14 @@ export default {
     width: 46px;
     height: 75px;
     background: #FAFAFA;
-    bottom: 61px;
+    bottom: 10px;
     left: 10px;
     line-height: 75px;
     font-size: 10px;
     font-weight: 500;
     color: #333333;
     text-align: center;
+    border-radius: 7px 7px 7px 7px;
     .box::after{
       content: '';
       display: inline-block;
@@ -591,9 +592,14 @@ export default {
       border-right:1px dotted #ccc ;
       position: absolute;
       right: -9px;
+      top: 0;
     }
     .box2{
       line-height: 63px;
+    }
+    .box3{
+      line-height: 21px;
+      padding-top: 17px;
     }
     .upload{
         display: inline-block;
@@ -611,7 +617,7 @@ export default {
   }
   .preview-box {
     position: absolute;
-    bottom: 61px;
+    bottom: 10px;
     width: calc(100vw - 74px);
     left: 74px;
     height: 75px;
@@ -619,7 +625,6 @@ export default {
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    background: #FAFAFA;
     box-sizing: border-box;
     .preview-img {
         height: 100%;
@@ -663,6 +668,7 @@ export default {
       position: relative;
       width: 62px;
       height: 75px;
+      background: #fff;
       .preview-img {
         width: auto;
         height: auto;
@@ -679,17 +685,28 @@ export default {
   }
 }
 .operate{
-  height: 103;
+  height: 103px;
+  width: 100vw;
   background: #fff;
+  position: absolute;
+  bottom: 50px;
+  overflow: hidden;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+
+  &.operate3{
+    height: 148px;
+  }
 }
 .tabs{
-  padding-top: 10px;
-  padding-bottom: 13px;
+  padding-top: 13px;
+  padding-bottom: 10px;
   background: #fff;
   .tab-item{
     margin: 0 16px;
     font-size: 16px;
     font-weight: 500;
+    color: #666666;
     &.active{
       color: #333333;
       position: relative;
