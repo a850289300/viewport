@@ -1,8 +1,8 @@
 <template>
     <div class="works-container">
         <div class="tool">
-          <span class="save"></span>
-          <span class="more"></span>  
+          <span class="save" @click="isShowSaveSuccess2 = true"></span>
+          <span class="more" @click="resetEdit = true"></span>  
         </div>
         <div class="swipe-box" :style="{width: width + 'px', height: height + 'px'}">
             <van-swipe @change="changeIndex" :initial-swipe="currentIndex" :touchable="operationType !== 'personality'">
@@ -13,7 +13,8 @@
                 </van-swipe-item>
             </van-swipe>
         </div>
-        <div class="operate" :class="'operate' + tabType">        
+        <span class="arrow-down"  :class="{ 'arrow-up': isFold , 'arrow-height': tabType === 3}" @click="isFold = !isFold"></span>
+        <div class="operate" :class="['operate' + tabType, { 'operate-fold' : isFold}]">
           <!-- :style="{width: width + 'px'}" --> 
           <span class="preview-box-left">
             <p class="box box1" v-show="tabType === 1">1/10</p>
@@ -30,8 +31,9 @@
           <!-- 装饰 -->
           <div class="source-box" v-if="tabType === 3">
             <p class="tabs">
-              <span v-for="item in sourceMap" :key="item.id" class="tab-item" :class="{active:currentSource === item.id}" @click="currentSource = item.id">{{ item.name }}</span> 
+              <span v-for="item in sourceMap.concat(sourceMap)" :key="item.id" class="tab-item" :class="{active:currentSource === item.id}" @click="currentSource = item.id">{{ item.name }}</span> 
             </p>
+            <span class="arrow-right"></span>
             <div v-show="currentSource === item.id" class="preview-box" v-for="item in sourceMap" :title="item.name" :key="item.id">
               <span v-for="(image, index) in decorationMap[item.id].images" :key="index" class="source-item">
                 <img :src="image.src" class="preview-img" @touchstart="addDecoration(image.src)">
@@ -80,6 +82,29 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 重新编辑 -->
+        <van-popup class="reset-popup van-popup van-popup--round van-popup--center" v-model="resetEdit" :close-on-click-overlay="false" :round="true">
+            <div class="triangle"></div>
+            <div class="reset" @click="resetEdit = false">重新编辑</div>
+        </van-popup>
+        <!-- 保存  弹框 -->
+        <van-popup class="van-popup-public" v-model="isShowSaveSuccess">
+            <popup-title/>
+            <p class="title">小小宇航员</p>
+            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
+            <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
+            <span class="btn-small btn-small2" @click="isShowSaveSuccess = false">重新编辑</span>
+
+            <popup-share class="share"/>
+        </van-popup>
+
+        <!-- 保存  弹框 2 -->
+        <van-popup class="van-popup-public van-popup-save2" v-model="isShowSaveSuccess2">
+            <popup-title/>
+            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="341" height="479"/>
+            <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
+            <span class="btn-small btn-small2" @click="isShowSaveSuccess = false">保存相册</span>
+        </van-popup>
         <van-share-sheet v-model="showShare" :options="options" cancel-text=""  @select="selectShare"/>
     </div>
 </template>
@@ -90,6 +115,10 @@ export default {
   data() {
     return {
       tabType:1, // 当前选中的tab
+      isFold: false,// 是否折叠
+      resetEdit: false, // 重新编辑
+      isShowSaveSuccess: false,// 保存成功
+      isShowSaveSuccess2: false,// 保存2
       popup: false, // 弹框
       popup2: false, // 弹框
       name: "", // 作品名称
@@ -488,8 +517,63 @@ export default {
 </script>
 <style lang="less" scoped>
 
-
+@import '../curriculum//popup.less';
 @import './index.less';
+.van-popup-save2{
+  .van-image{
+    margin-top: 65px;
+  }
+}
+.van-popup-public {
+
+  .btn-small{
+    width: 123px;
+    height: 44px;
+    margin-left: 53px;
+
+  } 
+  .btn-small2{
+    margin-left: 23px;
+  }
+  .share{
+    position: fixed;
+    bottom: 69px;
+  }
+}
+.reset-popup{
+  background: transparent;
+  height: 75px;
+  top: 99px;
+  right: 10px;
+  left: auto;
+  transform: none;
+}
+ 
+.triangle{
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border:8px transparent solid;
+  border-bottom: 10px #fff solid;
+  position: absolute;
+  top: -7px;
+  right: 12px;
+}
+.reset{
+  display: inline-block;
+  width: 128px;
+  height: 70px;
+  border-radius: 10px;
+  margin-top: 5px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #333333;
+  padding-left: 62px;
+  background: #fff url('../../asset/image/icon/reset.png') no-repeat 24px center;
+  background-size: 24px 24px;
+  line-height: 70px;
+  
+}
 .works-container {
   height: calc(100vh - 46px - 50px);
   background: #F5F5F5;
@@ -684,24 +768,51 @@ export default {
     }
   }
 }
+.arrow-down,.arrow-up{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #FFFFFF  url('../../asset/image/icon/arrow_down.png') no-repeat center center;
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.06);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 161px;
+    right: 10px;
+    transition: bottom 0.3s;
+}
+.arrow-height{
+  bottom: 206px;
+}
+.arrow-up{
+  transform: rotate(180deg);
+  bottom: 58px;
+}
 .operate{
   height: 103px;
   width: 100vw;
   background: #fff;
   position: absolute;
   bottom: 50px;
-  overflow: hidden;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-
+  overflow: hidden;
+  transition: all 0.3s;
   &.operate3{
     height: 148px;
   }
+  &.operate-fold{
+    height: 0;
+  }
+  
 }
 .tabs{
   padding-top: 13px;
   padding-bottom: 10px;
   background: #fff;
+  white-space: nowrap;
+  overflow-x: auto;
+  width: calc(100% - 17px);
+  float: left;
   .tab-item{
     margin: 0 16px;
     font-size: 16px;
@@ -719,12 +830,21 @@ export default {
         height: 3px;
         background: #1FB895;
         border-radius: 3px;
-        bottom: -5px;
+        bottom: -8px;
         left: 50%;
         transform: translateX(-50%);
       }
     }
   }
+}
+.arrow-right{
+  display: inline-block;
+  height: 100%;
+  width: 17px;
+  height: 46px;
+  background:  url('../../asset/image/icon/arrow-right.png') no-repeat center center;
+  background-size: 5px 9px;
+  float: left;
 }
 
 </style>

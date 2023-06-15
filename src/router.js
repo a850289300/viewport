@@ -16,6 +16,13 @@ const routes = [
     }
   },
   {
+    name: 'diy',
+    component: () => import('./view/curriculum/diy'),
+    meta: {
+      title: '动态创作'
+    }
+  },
+  {
     name: 'view',
     component: () => import('./view/curriculum/view'),
     meta: {

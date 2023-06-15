@@ -33,7 +33,7 @@
             <span class="btn btn-works" @click="toCreate">动态创作</span>
         </div>
         <!-- 弹框 -->
-        <van-popup v-model="show">
+        <van-popup class="van-popup-public" v-model="show">
             <popup-title/>
             <p class="title">小小宇航员</p>
             <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
@@ -43,8 +43,6 @@
     </div>
 </template>
 <script>
-import popupTitle from '@/view/common/popupTitle.vue';
-import popupShare from '@/view/common/popupShare.vue';
 
 export default {
     data() {
@@ -152,8 +150,6 @@ export default {
         }
     },
     components:{
-        popupTitle,
-        popupShare
     },
     methods: {
         // 去作品集

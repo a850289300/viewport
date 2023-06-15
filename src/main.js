@@ -7,7 +7,6 @@ import axios from 'axios'
 import 'vant/lib/index.less';
 import '#/styles/reset.css';
 import {Col, Row, Overlay, Button, Icon, Popup, Field, Steps, Step, Search, Grid, GridItem, Image, ImagePreview, List, Cell, Swipe, SwipeItem, Lazyload, Tabs, Tab, ShareSheet } from 'vant';
-
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Overlay)
@@ -33,6 +32,10 @@ Vue.use(ShareSheet);
 Vue.prototype.bus = new Vue();
 Vue.prototype.$http = axios;
 
+import popupTitle from '@/view/common/popupTitle.vue';
+import popupShare from '@/view/common/popupShare.vue';
+Vue.component('popupTitle',popupTitle);
+Vue.component('popupShare',popupShare);
 new Vue({
   router,
   el: '#app',
