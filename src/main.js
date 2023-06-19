@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import 'vant/lib/index.less';
 import '#/styles/reset.css';
-import {Col, Row, Overlay, Button, Icon, Popup, Field, Steps, Step, Search, Grid, GridItem, Image, ImagePreview, List, Cell, Swipe, SwipeItem, Lazyload, Tabs, Tab, ShareSheet } from 'vant';
+import {Toast, Col, Row, Overlay, Button, Icon, Popup, Field, Steps, Step, Search, Grid, GridItem, Image, ImagePreview, List, Cell, Swipe, SwipeItem, Lazyload, Tabs, Tab, ShareSheet } from 'vant';
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Overlay)
@@ -29,6 +29,8 @@ Vue.use(Lazyload);
 Vue.use(Tabs);
 Vue.use(Tab);
 Vue.use(ShareSheet);
+Vue.use(Toast);
+
 Vue.prototype.bus = new Vue();
 Vue.prototype.$http = axios;
 

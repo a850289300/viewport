@@ -75,6 +75,7 @@ export default {
     border-radius: 10px;
     line-height: 50px;
     padding-top: 13px;
+    padding-right: 17px;
     box-sizing: border-box;
   }
   .van-field__left-icon{
@@ -98,7 +99,8 @@ export default {
     height: 284px;
   }
   /deep/.van-icon-clear{
-    padding-right: 17px;
+    position: relative;
+    right: 17px !important;
   }
   .list-container {
     padding: 0 16px;

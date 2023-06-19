@@ -34,7 +34,7 @@
         </div>
         <!-- 弹框 -->
         <van-popup class="van-popup-public" v-model="show">
-            <popup-title/>
+            <popup-title @goBack="show = false"/>
             <p class="title">小小宇航员</p>
             <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
             <span class="btn-small" @click="save">保存相册</span>

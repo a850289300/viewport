@@ -19,7 +19,7 @@ export default {
 
   methods: {
     goBack() {
-      window.history.go(-1)
+      this.$emit('goBack')
     },
     goHome(){
       if(this.$route.path === '/curriculum'){

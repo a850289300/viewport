@@ -1,7 +1,7 @@
 <template>
     <div class="works-container">
         <div class="tool">
-          <span class="save" @click="isShowSaveSuccess2 = true"></span>
+          <span class="save" @click="saveProject"></span>
           <span class="more" @click="resetEdit = true"></span>  
         </div>
         <div class="swipe-box" :style="{width: width + 'px', height: height + 'px'}">
@@ -21,17 +21,23 @@
             <p class="box box2" v-show="tabType === 2">1/10 <span class="upload">上传</span></p>
             <p class="box box3" v-show="tabType === 3">素<br/>材</p>
           </span>
-          <!-- 作品和作品集 -->
-          <div class="preview-box" v-if="tabType === 1 || tabType === 2">
+          <!-- 作品 -->
+          <div class="preview-box" v-if="tabType === 1">
               <span v-for="(image, index) in imgList" :key="index" style="position: relative">
                 <img :src="image" class="preview-img" @click="changeIndex(index)">
                 <span v-if="index === currentIndex" class="active-preview-img"></span>
               </span>
           </div>
-          <!-- 装饰 -->
+          <!-- 作品集 -->
+          <div class="preview-box" v-if="tabType === 2">
+              <span v-for="(image, index) in decorationMap['1'].images" :key="index" style="position: relative">
+                <img :src="image.src" class="preview-img" @click="addDecoration(image.src)">
+              </span>
+          </div>
+          <!-- 装饰 (个性化) -->
           <div class="source-box" v-if="tabType === 3">
             <p class="tabs">
-              <span v-for="item in sourceMap.concat(sourceMap)" :key="item.id" class="tab-item" :class="{active:currentSource === item.id}" @click="currentSource = item.id">{{ item.name }}</span> 
+              <span v-for="item in sourceMap" :key="item.id" class="tab-item" :class="{active:currentSource === item.id}" @click="currentSource = item.id">{{ item.name }}</span> 
             </p>
             <span class="arrow-right"></span>
             <div v-show="currentSource === item.id" class="preview-box" v-for="item in sourceMap" :title="item.name" :key="item.id">
@@ -42,7 +48,7 @@
           </div>
         </div>
         <!-- :style="{width: width + 'px'}" -->
-        <div class="operate-box" v-show="true">
+        <div class="operate-box" v-show="false">
           <span class="operate-box-item col-3" v-if="['personality','edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="save">保存</van-button></span>
           <span class="operate-box-item col-3" v-if="['personality'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="edit">编辑</van-button></span>
           <span class="operate-box-item col-3" v-if="['edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="individuation">个性化</van-button></span>
@@ -59,7 +65,7 @@
         <van-popup v-model="popup" :close-on-click-overlay="false" :round="true">
             <div class="popup-modal">
                 <div class="popup-top">
-                    <van-field v-model="name" class="popus-input" placeholder="请输入作品名称" />
+                    <van-field v-model="projectName" class="popus-input" placeholder="请输入作品名称" />
                 </div>
                 <div class="popup-bottom">
                     <span class="btn popus-btn" @touchstart="confirm">确认</span>
@@ -71,13 +77,13 @@
         <van-popup v-model="popup2" :close-on-click-overlay="false" :round="true">
             <div class="popup-modal popup-modal2">
                 <div class="popup-top">
-                    <van-field v-model="name" class="popus-input" placeholder="请输入作品名称" />
+                    <van-field v-model="projectName" class="popus-input" placeholder="请输入作品名称" />
                     <van-field v-model="name" class="popus-input popus-input-name" placeholder="姓名" />
-                    <van-field v-model="name" class="popus-input popus-input-age" placeholder="年龄" />
-                    <van-field v-model="name" type="textarea" class="popus-input popus-input-intro" placeholder="个性签名" />
+                    <van-field v-model="age" class="popus-input popus-input-age" placeholder="年龄" />
+                    <van-field v-model="sign" type="textarea" class="popus-input popus-input-intro" placeholder="个性签名"/>
                 </div>
                 <div class="popup-bottom">
-                    <span class="btn popus-btn" @touchstart="popup2 = false">确认</span>
+                    <span class="btn popus-btn" @touchstart="confirm">确认</span>
                     <span class="popup-exit" @touchstart="exit">取消并退出</span>
                 </div>
             </div>
@@ -85,25 +91,25 @@
         <!-- 重新编辑 -->
         <van-popup class="reset-popup van-popup van-popup--round van-popup--center" v-model="resetEdit" :close-on-click-overlay="false" :round="true">
             <div class="triangle"></div>
-            <div class="reset" @click="resetEdit = false">重新编辑</div>
+            <div class="reset" @click="reloadProject">重新编辑</div>
         </van-popup>
         <!-- 保存  弹框 -->
         <van-popup class="van-popup-public" v-model="isShowSaveSuccess">
-            <popup-title/>
+            <popup-title @goBack="isShowSaveSuccess = false"/>
             <p class="title">小小宇航员</p>
             <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
-            <span class="btn-small btn-small2" @click="isShowSaveSuccess = false">重新编辑</span>
+            <span class="btn-small btn-small2" @click="reloadProject">重新编辑</span>
 
             <popup-share class="share"/>
         </van-popup>
 
         <!-- 保存  弹框 2 -->
         <van-popup class="van-popup-public van-popup-save2" v-model="isShowSaveSuccess2">
-            <popup-title/>
+            <popup-title @goBack="isShowSaveSuccess2 = false"/>
             <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="341" height="479"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
-            <span class="btn-small btn-small2" @click="isShowSaveSuccess = false">保存相册</span>
+            <span class="btn-small btn-small2" @touchstart="saveAlbum">保存相册</span>
         </van-popup>
         <van-share-sheet v-model="showShare" :options="options" cancel-text=""  @select="selectShare"/>
     </div>
@@ -121,7 +127,10 @@ export default {
       isShowSaveSuccess2: false,// 保存2
       popup: false, // 弹框
       popup2: false, // 弹框
-      name: "", // 作品名称
+      projectName: '',// 作品名称
+      name: '', 
+      age: '',
+      sign: '',
       canvas: {},
       scaleX: 1,
       scaleY: 1,
@@ -144,14 +153,14 @@ export default {
           name: '类型二',
           id: 2
         },
-        {
-          name: '类型三',
-          id: 3
-        },
-        {
-          name: '类型四',
-          id: 4
-        },
+        // {
+        //   name: '类型三',
+        //   id: 3
+        // },
+        // {
+        //   name: '类型四',
+        //   id: 4
+        // },
         // {
         //   name: '类型五',
         //   id: 5
@@ -171,19 +180,40 @@ export default {
     };
   },
   created() {
-    this.popup = true;
     const { id, type } = this.$route.query;
     this.id = id;
     this.type = type;
+    // eslint-disable-next-line no-debugger
+    // debugger
     this.imgList = templateList[id].images;
     this.decorationMap = decoration || {};
+
+    this.popup2 = !localStorage.getItem(this.id)
   },
   mounted() {
-    this.getBoxInfo();
-    this.createAllCanvas();
-    this.changeTitle()
+    this.initProject()
   },
   methods: {
+    initProject(){
+      this.getBoxInfo();
+      this.createAllCanvas();
+      this.changeTitle()
+    },
+    // 重新编辑 先置空 重新加载
+    reloadProject(){
+      this.resetProject()
+      this.initProject()
+      this.isShowSaveSuccess = false
+      this.resetEdit = false
+    },
+    saveProject(){
+      this.isShowSaveSuccess = true
+      this.save()
+    },
+    // 重置
+    resetProject(){
+      this.save('reset')
+    },
     // 分享
     selectShare(options) {
       const { type } = options;
@@ -198,6 +228,8 @@ export default {
     },
     // 保存到相册
     saveAlbum() {
+      // eslint-disable-next-line no-debugger
+      debugger
       const canvas = this.canvas;
       const id = new Date().getTime()
       for (let i in canvas) {
@@ -219,17 +251,23 @@ export default {
       this.showShare = true;
     },
     // 保存
-    save() {
+    save(type) {
       const canvas = this.canvas;
       const values = {}
       for (let i in canvas) {
         const info = this.getData(canvas[i])
         values[i] = info;
       }
+      
+      
       const data = {
         id: this.id, // 模板id
-        name: this.name, // 作品名称
+        name: this.projectName, // 作品名称
         data: values // 数据
+      }
+
+      if(type === 'reset'){
+        data.data = {}
       }
       localStorage.setItem(this.id, JSON.stringify(data));
     },
@@ -277,6 +315,9 @@ export default {
     },
     // 初始化所有的canvas
     createAllCanvas() {
+      
+        // eslint-disable-next-line no-debugger
+        // debugger
         this.imgList.forEach((item, index)=> {
           this.canvas[index] = this.initCanvas(index, this.imgList[index])
         })
@@ -287,15 +328,22 @@ export default {
     },
     // 确认
     confirm() {
+      if(!this.projectName){
+        return alert('请输入作品名！');
+      }
       this.popup = false;
-      this.popup2 = true;
+      this.popup2 = false;
+
     },
     // 从缓存中获取数据
     getDataByCache() {
+      // eslint-disable-next-line no-debugger
+      // debugger
       const info = JSON.parse(localStorage.getItem(this.id));
       const sX = this.scaleX; // 整体的缩放比例
       const sY = this.scaleY; // 整体的缩放比例
       const data = info.data || {};
+      
       for (let i in data) {
         data[i].forEach(item => {
           const { type, angle } = item;
@@ -303,10 +351,12 @@ export default {
           const top = item.top * sY;
           const width = item.width * sX;
           const height = item.height * sY;
+          
           if (type === "image") {
             this.addImg(
               i,
-              this.imgList[0],
+              // this.imgList[0],
+              item.src,
               {
                 left,
                 top,
@@ -366,15 +416,15 @@ export default {
             scaleX,
             scaleY
           });
-          this.addRect(id, {
-            left: 100,
-            top: 100,
-            width: 50,
-            height: 50,
-            fill: 'red',
-            stroke: 'black',
-            angle: 0
-          })
+          // this.addRect(id, {
+          //   left: 100,
+          //   top: 100,
+          //   width: 50,
+          //   height: 50,
+          //   fill: 'red',
+          //   stroke: 'black',
+          //   angle: 0
+          // })
           this.getDataByCache();
         });
       }
@@ -476,9 +526,12 @@ export default {
       const sX = Number(this.scaleX);
       const sY = Number(this.scaleY);
       objects.forEach(item => {
+        
         let { width, height, left, top, angle, type, scaleX, scaleY } = item;
         // 所有的 宽高left,top都需要进行坐标转换
         if (type === "image") {
+          
+          console.log(item,item.getSrc())
           width = width * scaleX;
           height = height * scaleY;
         }
@@ -488,7 +541,8 @@ export default {
           width: width / sX,
           height: height / sY,
           angle,
-          type
+          type,
+          src: (item.getSrc && item.getSrc())
         });
       });
       return data;
@@ -712,6 +766,7 @@ export default {
     box-sizing: border-box;
     .preview-img {
         height: 100%;
+        max-width: 40px;
         margin: 0 5px;
     }
     .active-preview-img {
