@@ -36,8 +36,12 @@ Vue.prototype.$http = axios;
 
 import popupTitle from '@/view/common/popupTitle.vue';
 import popupShare from '@/view/common/popupShare.vue';
+import upload from '@/view/common/upload.vue';
+
 Vue.component('popupTitle',popupTitle);
 Vue.component('popupShare',popupShare);
+Vue.component('upload',upload);
+
 new Vue({
   router,
   el: '#app',

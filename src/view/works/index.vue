@@ -17,8 +17,9 @@
         <div class="operate" :class="['operate' + tabType, { 'operate-fold' : isFold}]">
           <!-- :style="{width: width + 'px'}" --> 
           <span class="preview-box-left">
-            <p class="box box1" v-show="tabType === 1">1/10</p>
-            <p class="box box2" v-show="tabType === 2">1/10 <span class="upload">上传</span></p>
+            <p class="box box1" v-show="tabType === 1">{{ currentIndex + 1 }}/{{ imgList.length }}</p>
+            <p class="box box2" v-show="tabType === 2">{{selfUploadImgList.length}}/{{ selfUploadImgListMax }} <upload v-if="selfUploadImgList.length < selfUploadImgListMax" class="upload" :btnText="'上传'" @callback="uploadCallback"/></p>
+
             <p class="box box3" v-show="tabType === 3">素<br/>材</p>
           </span>
           <!-- 作品 -->
@@ -30,8 +31,8 @@
           </div>
           <!-- 作品集 -->
           <div class="preview-box" v-if="tabType === 2">
-              <span v-for="(image, index) in decorationMap['1'].images" :key="index" style="position: relative">
-                <img :src="image.src" class="preview-img" @click="addDecoration(image.src)">
+              <span v-for="(image, index) in selfUploadImgList" :key="index" style="position: relative">
+                <img :src="image" class="preview-img" @click="addDecoration(image)">
               </span>
           </div>
           <!-- 装饰 (个性化) -->
@@ -170,6 +171,8 @@ export default {
         //   id: 6
         // },
       ],
+      selfUploadImgList:[], // 自定义上传的装饰
+      selfUploadImgListMax: 3, // 自定义上传装饰的最大值
       currentSource: 1, // 当前激活状态的选中素材类型
       decorationMap: {}, // 素材资源
       showShare: false, // 是否展示分享面板
@@ -194,6 +197,7 @@ export default {
     this.initProject()
   },
   methods: {
+
     initProject(){
       this.getBoxInfo();
       this.createAllCanvas();
@@ -236,6 +240,10 @@ export default {
         const item = canvas[i];
         this.downloadImg(item.toDataURL({format: 'jpeg'}), `${id}-${i}`)
       }
+    },
+    uploadCallback(res){
+      this.selfUploadImgList.push('http://' + res.Location)
+      console.log(res)
     },
     // 下载图片
     downloadImg(src, id) {
