@@ -36,7 +36,7 @@
         <van-popup class="van-popup-public" v-model="show">
             <popup-title @goBack="show = false"/>
             <p class="title">小小宇航员</p>
-            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
+            <van-image src="/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="269" height="377"/>
             <span class="btn-small" @click="save">保存相册</span>
             <popup-share class="share"/>
         </van-popup>

@@ -98,7 +98,7 @@
         <van-popup class="van-popup-public" v-model="isShowSaveSuccess">
             <popup-title @goBack="isShowSaveSuccess = false"/>
             <p class="title">小小宇航员</p>
-            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="269" height="377"/>
+            <van-image src="/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="269" height="377"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
             <span class="btn-small btn-small2" @click="reloadProject">重新编辑</span>
 
@@ -108,7 +108,7 @@
         <!-- 保存  弹框 2 -->
         <van-popup class="van-popup-public van-popup-save2" v-model="isShowSaveSuccess2">
             <popup-title @goBack="isShowSaveSuccess2 = false"/>
-            <van-image :src="require('@/asset/image/template/0/1.jpg')" radius="10"  width="341" height="479"/>
+            <van-image src="/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="341" height="479"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
             <span class="btn-small btn-small2" @touchstart="saveAlbum">保存相册</span>
         </van-popup>
@@ -117,7 +117,6 @@
 </template>
 <script>
 import { fabric } from 'fabric';
-import { templateList, decoration } from "@/asset/config/index.js";
 export default {
   data() {
     return {
@@ -188,16 +187,24 @@ export default {
     this.type = type;
     // eslint-disable-next-line no-debugger
     // debugger
-    this.imgList = templateList[id].images;
-    this.decorationMap = decoration || {};
+    this.loadImgList()
+    this.imgList = this.templateList[id].images;
+    this.decorationMap = this.decoration || {};
 
     this.popup2 = !localStorage.getItem(this.id)
+
+    
   },
   mounted() {
     this.initProject()
   },
   methods: {
-
+    async loadImgList(){
+      let templateList = await this.$http.get('/koolearn/config/templateList.json')
+      let decoration = await this.$http.get('/koolearn/config/decoration.json')
+      this.templateList = templateList.data
+      this.decoration = decoration.data
+    },
     initProject(){
       this.getBoxInfo();
       this.createAllCanvas();
@@ -325,7 +332,7 @@ export default {
     createAllCanvas() {
       
         // eslint-disable-next-line no-debugger
-        // debugger
+        debugger
         this.imgList.forEach((item, index)=> {
           this.canvas[index] = this.initCanvas(index, this.imgList[index])
         })

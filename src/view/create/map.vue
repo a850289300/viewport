@@ -14,21 +14,21 @@
           <div class="swiper-slide">
             <!-- <p class="star"><span></span><span></span><span></span></p> -->
             <img
-              :src="require('../../asset/image/template/0/1.jpg')"
+              src="/koolearn/template/2-海边度假风/content-9.jpg"
               class="main-img"
             />
           </div>
           <div class="swiper-slide">
             <!-- <p class="star"><span></span><span></span><span></span></p> -->
             <img
-              :src="require('../../asset/image/template/0/2.jpg')"
+              src="/koolearn/template/2-海边度假风/content-10.jpg"
               class="main-img"
             />
           </div>
           <div class="swiper-slide swiper-slide-next">
             <!-- <p class="star"><span></span><span></span><span></span></p> -->
             <img
-              :src="require('../../asset/image/template/0/3.jpg')"
+              src="/koolearn/template/2-海边度假风/content-8.jpg"
               class="main-img"
             />
           </div>

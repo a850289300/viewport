@@ -1,22 +1,22 @@
 export const templateList = [
-    {
-        src: require("@/asset/image/template/0/1.jpg"), // 配图地址
-        name: 'Party', // 模板名称
-        images: [
-            require('@/asset/image/template/0/1.jpg'),
-            require('@/asset/image/template/0/2.jpg'),
-        ],
-        id: 0 // 唯一id等
-    },
-    {
-        src: 'https://img01.yzcdn.cn/vant/apple-1.jpg', // 配图地址
-        name: '模板名称', // 模板名称
-        images: [
-            'https://img01.yzcdn.cn/vant/apple-1.jpg',
-            'https://img01.yzcdn.cn/vant/apple-2.jpg',
-        ],
-        id: 1 // 唯一id等
-    },
+    // {
+    //     src: require("@/asset/image/template/0/1.jpg"), // 配图地址
+    //     name: 'Party', // 模板名称
+    //     images: [
+    //         require('@/asset/image/template/0/1.jpg'),
+    //         require('@/asset/image/template/0/2.jpg'),
+    //     ],
+    //     id: 0 // 唯一id等
+    // },
+    // {
+    //     src: 'https://img01.yzcdn.cn/vant/apple-1.jpg', // 配图地址
+    //     name: '模板名称', // 模板名称
+    //     images: [
+    //         'https://img01.yzcdn.cn/vant/apple-1.jpg',
+    //         'https://img01.yzcdn.cn/vant/apple-2.jpg',
+    //     ],
+    //     id: 1 // 唯一id等
+    // },
     // {
     //     src: require("@/asset/image/template/2/1.jpg"), // 配图地址
     //     name: '游乐场', // 模板名称
@@ -120,56 +120,54 @@ export const templateList = [
 
 // 装饰资源 key 为id  value 为素材数组
 export const decoration = {
-    1: {
-        name: '类型一',
-        images: [
-            {
-                id: '1-1',
-                src: require('@/asset/image/decoration/1/1.png')
-            },
-            {
-                id: '1-2',
-                src: 'https://dev.qyyjt.cn/static/media/ico_hot_search.7092abda1156dfce9a9a674d05851a50.svg'
-            },
-            {
-                id: '1-3',
-                src: require('@/asset/image/decoration/1/3.png')
-            },
-            {
-                id: '1-4',
-                src: require('@/asset/image/decoration/1/4.png')
-            },
-            {
-                id: '1-5',
-                src: require('@/asset/image/decoration/1/5.png')
-            }
-        ]
-    },
-    2: {
-        name: '类型二',
-        images: [
-            {
-                id: '2-1',
-                src: require('@/asset/image/decoration/2/5.png')
-            },
-            {
-                id: '2-2',
-                src: require('@/asset/image/decoration/2/3.png')
-            },
-            {
-                id: '2-3',
-                src: require('@/asset/image/decoration/2/2.png')
-            },
-            {
-                id: '2-4',
-                src: require('@/asset/image/decoration/2/4.png')
-            },
-            {
-                id: '2-5',
-                src: require('@/asset/image/decoration/2/1.png')
-            }
-        ]
-    },
+    // 1: {
+    //     name: '类型一',
+    //     images: [{
+    //             id: '1-1',
+    //             src: require('@/asset/image/decoration/1/1.png')
+    //         },
+    //         {
+    //             id: '1-2',
+    //             src: 'https://dev.qyyjt.cn/static/media/ico_hot_search.7092abda1156dfce9a9a674d05851a50.svg'
+    //         },
+    //         {
+    //             id: '1-3',
+    //             src: require('@/asset/image/decoration/1/3.png')
+    //         },
+    //         {
+    //             id: '1-4',
+    //             src: require('@/asset/image/decoration/1/4.png')
+    //         },
+    //         {
+    //             id: '1-5',
+    //             src: require('@/asset/image/decoration/1/5.png')
+    //         }
+    //     ]
+    // },
+    // 2: {
+    //     name: '类型二',
+    //     images: [{
+    //             id: '2-1',
+    //             src: require('@/asset/image/decoration/2/5.png')
+    //         },
+    //         {
+    //             id: '2-2',
+    //             src: require('@/asset/image/decoration/2/3.png')
+    //         },
+    //         {
+    //             id: '2-3',
+    //             src: require('@/asset/image/decoration/2/2.png')
+    //         },
+    //         {
+    //             id: '2-4',
+    //             src: require('@/asset/image/decoration/2/4.png')
+    //         },
+    //         {
+    //             id: '2-5',
+    //             src: require('@/asset/image/decoration/2/1.png')
+    //         }
+    //     ]
+    // },
     // 3: {
     //     name: '类型3',
     //     images: [
@@ -189,4 +187,3 @@ export const decoration = {
     //     ]
     // },
 }
-

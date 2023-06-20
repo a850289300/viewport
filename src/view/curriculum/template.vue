@@ -19,25 +19,32 @@
     </div>
 </template>
 <script>
-import { templateList } from "@/asset/config/index.js";
 export default {
   data() {
     return {
       searchVal: "", // 搜索内容
-      templateList: templateList,
+      templateList: '',
       show: false, // 是否展示图片预览框
       images: [], // 展示的图片地址
       currentTemplate: {} // 当前模板
     };
   },
-  created() {},
+  created() {
+    this.loadImgList()
+  },
   mounted() {
   },
   methods: {
+    async loadImgList(){
+      let templateList = await this.$http.get('/koolearn/config/templateList.json')
+      let decoration = await this.$http.get('/koolearn/config/decoration.json')
+      this.templateList = templateList.data
+      this.decoration = decoration.data
+    },
     search() {
       const searchVal = this.searchVal;
       const arr = [];
-      templateList.forEach((item)=> {
+      this.templateList.forEach((item)=> {
         const { name } = item;
         if (name.indexOf(searchVal) > -1) {
           arr.push(item)
