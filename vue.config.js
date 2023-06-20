@@ -54,6 +54,14 @@ module.exports = {
                     '^/koolearn/': ''
                 }
             },
+            '^/myqcloud/': {
+                changeOrigin: true,
+                target: 'https://pre-wall-e-1253017550.cos.ap-nanjing.myqcloud.com/',
+                pathRewrite: {
+                    '^/myqcloud/': ''
+
+                }
+            },
 
         }
     }

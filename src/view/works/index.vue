@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- :style="{width: width + 'px'}" -->
-        <div class="operate-box" v-show="false">
+        <div class="operate-box">
           <span class="operate-box-item col-3" v-if="['personality','edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="save">保存</van-button></span>
           <span class="operate-box-item col-3" v-if="['personality'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="edit">编辑</van-button></span>
           <span class="operate-box-item col-3" v-if="['edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="individuation">个性化</van-button></span>
@@ -90,7 +90,7 @@
             </div>
         </van-popup>
         <!-- 重新编辑 -->
-        <van-popup class="reset-popup van-popup van-popup--round van-popup--center" v-model="resetEdit" :close-on-click-overlay="false" :round="true">
+        <van-popup class="reset-popup van-popup van-popup--round van-popup--center" v-model="resetEdit" :close-on-click-overlay="true" :round="true">
             <div class="triangle"></div>
             <div class="reset" @click="reloadProject">重新编辑</div>
         </van-popup>
@@ -98,7 +98,7 @@
         <van-popup class="van-popup-public" v-model="isShowSaveSuccess">
             <popup-title @goBack="isShowSaveSuccess = false"/>
             <p class="title">小小宇航员</p>
-            <van-image src="/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="269" height="377"/>
+            <van-image src="/myqcloud/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="269" height="377"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
             <span class="btn-small btn-small2" @click="reloadProject">重新编辑</span>
 
@@ -108,7 +108,7 @@
         <!-- 保存  弹框 2 -->
         <van-popup class="van-popup-public van-popup-save2" v-model="isShowSaveSuccess2">
             <popup-title @goBack="isShowSaveSuccess2 = false"/>
-            <van-image src="/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="341" height="479"/>
+            <van-image src="/myqcloud/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="341" height="479"/>
             <span class="btn-small" @click="isShowSaveSuccess = false">继续编辑</span>
             <span class="btn-small btn-small2" @touchstart="saveAlbum">保存相册</span>
         </van-popup>
@@ -144,35 +144,10 @@ export default {
 
       },
       operationType: 'edit', // 编辑 edit, 个性化 personality， 预览 preview
-      sourceMap: [
-        {
-          name: '类型一',
-          id: 1
-        },
-        {
-          name: '类型二',
-          id: 2
-        },
-        // {
-        //   name: '类型三',
-        //   id: 3
-        // },
-        // {
-        //   name: '类型四',
-        //   id: 4
-        // },
-        // {
-        //   name: '类型五',
-        //   id: 5
-        // },
-        // {
-        //   name: '类型六',
-        //   id: 6
-        // },
-      ],
+      sourceMap: [],
       selfUploadImgList:[], // 自定义上传的装饰
       selfUploadImgListMax: 3, // 自定义上传装饰的最大值
-      currentSource: 1, // 当前激活状态的选中素材类型
+      currentSource: '', // 当前激活状态的选中素材类型
       decorationMap: {}, // 素材资源
       showShare: false, // 是否展示分享面板
       options: [
@@ -181,27 +156,35 @@ export default {
       ],
     };
   },
-  created() {
+  async created() {
     const { id, type } = this.$route.query;
     this.id = id;
     this.type = type;
-    // eslint-disable-next-line no-debugger
-    // debugger
-    this.loadImgList()
+    // 获取模板资源
+    await this.loadImgList()
+    // 当前作品集下的图片列表
     this.imgList = this.templateList[id].images;
     this.decorationMap = this.decoration || {};
-
-    this.popup2 = !localStorage.getItem(this.id)
-
+    for(var key in this.decorationMap){
+      if(!this.currentSource) this.currentSource = key
+      this.sourceMap.push({name:this.decorationMap[key].name,id:key})
+    }
     
-  },
-  mounted() {
-    this.initProject()
+    // 本地不存在这个模板的保存记录 则提示输入名称 年龄等
+    // eslint-disable-next-line no-debugger
+    debugger
+    let savedData = JSON.parse(localStorage.getItem(this.id))
+    this.popup2 = !savedData?.name
+    
+    this.$nextTick(()=>{
+      this.initProject()
+    })
+    
   },
   methods: {
     async loadImgList(){
-      let templateList = await this.$http.get('/koolearn/config/templateList.json')
-      let decoration = await this.$http.get('/koolearn/config/decoration.json')
+      let templateList = await this.$http.get('/myqcloud/koolearn/config/templateList.json')
+      let decoration = await this.$http.get('/myqcloud/koolearn/config/decoration.json')
       this.templateList = templateList.data
       this.decoration = decoration.data
     },
@@ -240,7 +223,7 @@ export default {
     // 保存到相册
     saveAlbum() {
       // eslint-disable-next-line no-debugger
-      debugger
+      // debugger
       const canvas = this.canvas;
       const id = new Date().getTime()
       for (let i in canvas) {
@@ -249,7 +232,7 @@ export default {
       }
     },
     uploadCallback(res){
-      this.selfUploadImgList.push('http://' + res.Location)
+      this.selfUploadImgList.push(res.Location.replace('pre-wall-e-1253017550.cos.ap-nanjing.myqcloud.com','/myqcloud'))
       console.log(res)
     },
     // 下载图片
@@ -273,7 +256,8 @@ export default {
         const info = this.getData(canvas[i])
         values[i] = info;
       }
-      
+      // eslint-disable-next-line no-debugger
+      // debugger
       
       const data = {
         id: this.id, // 模板id
@@ -330,9 +314,6 @@ export default {
     },
     // 初始化所有的canvas
     createAllCanvas() {
-      
-        // eslint-disable-next-line no-debugger
-        debugger
         this.imgList.forEach((item, index)=> {
           this.canvas[index] = this.initCanvas(index, this.imgList[index])
         })
@@ -351,7 +332,7 @@ export default {
 
     },
     // 从缓存中获取数据
-    getDataByCache() {
+    getDataByCache(index) {
       // eslint-disable-next-line no-debugger
       // debugger
       const info = JSON.parse(localStorage.getItem(this.id));
@@ -359,40 +340,40 @@ export default {
       const sY = this.scaleY; // 整体的缩放比例
       const data = info.data || {};
       
-      for (let i in data) {
-        data[i].forEach(item => {
-          const { type, angle } = item;
-          const left = item.left * sX;
-          const top = item.top * sY;
-          const width = item.width * sX;
-          const height = item.height * sY;
-          
-          if (type === "image") {
-            this.addImg(
-              i,
+      
+      data[index].forEach(item => {
+        const { type, angle } = item;
+        const left = item.left * sX;
+        const top = item.top * sY;
+        const width = item.width * sX;
+        const height = item.height * sY;
+        
+        if (type === "image") {
+          this.addImg(
+            index,
               // this.imgList[0],
-              item.src,
-              {
-                left,
-                top,
-                width,
-                height,
-                angle
-              }
-            );
-          } else if (type === "rect") {
-            this.addRect(i, {
+            item.src,
+            {
               left,
               top,
               width,
               height,
-              angle,
-              fill: "red",
-              stroke: "black"
-            });
-          }
-        });
-      }
+              angle
+            }
+          );
+        } else if (type === "rect") {
+            this.addRect(index, {
+            left,
+            top,
+            width,
+            height,
+            angle,
+            fill: "red",
+            stroke: "black"
+          });
+        }
+      });
+      
     },
 
     // 根据当前屏幕按照比例计算出容器的大小(假设宽高比9/16)
@@ -415,8 +396,8 @@ export default {
     },
 
     // 初始化canvas
-    initCanvas(id, url) {
-      const canvas = new fabric.Canvas( (id || id === 0) ? `canvas-${id}` : 'canvas', {
+    initCanvas(index, url) {
+      const canvas = new fabric.Canvas( (index || index === 0) ? `canvas-${index}` : 'canvas', {
         width: this.width,
         height: this.height
       });
@@ -440,7 +421,7 @@ export default {
           //   stroke: 'black',
           //   angle: 0
           // })
-          this.getDataByCache();
+          this.getDataByCache(index);
         });
       }
       // 新增删除控制器
@@ -477,6 +458,7 @@ export default {
             img.set({
               width: img.width,
               height: img.height,
+              crossOrigin: 'Anonymous',
               left,
               top,
               angle,

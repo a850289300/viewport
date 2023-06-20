@@ -86,6 +86,7 @@ export default {
                 },
                 onFileFinish: function (err, data, options) {
                     console.log(options.Key + '上传' + (err ? '失败' : '完成'));
+                    debugger
                     that.$emit('callback',data)
                 },
             }, (err,) => {
