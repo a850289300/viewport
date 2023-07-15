@@ -64,7 +64,7 @@ export default {
       window.history.go(-1);
     },
     // 确认
-    confirm() {
+    confirm() {decoration 
       this.popup = false;
     },
     // 从缓存中获取数据

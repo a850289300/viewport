@@ -1,14 +1,20 @@
 <template>
   <div class="learning-map">
     <div class="bg">
-      <span class="btn btndemo" @click="openShow">点击</span>
-      <!-- <img :src="bgUrl" /> -->
+      <!-- <span class="btn btndemo" @click="openShow">点击</span> -->
+      <div class="lessonList">
+        <p v-for="(item,index) in lessonMapList" @click="openShow(item)" :key="item.lessonId + index">
+          <img v-if="item.isStart" :src="require('@/asset/image/map/hover/'+(index + 1)+'.png')" alt="">
+          <img v-else :src="require('@/asset/image/map/default/'+(index + 1)+'.png')" alt="">
+        </p>
+      </div>
+      <img src="https://pre-wall-e-1253017550.cos.ap-nanjing.myqcloud.com/koolearn/map/background.png" />
       
-      <popup-title/>
+      <!-- <popup-title/> -->
     </div>
 
     <van-popup v-model="show" :close-on-click-overlay="true" :round="true">
-      <p class="star"><span></span><span></span><span></span></p>
+      <p class="star"><span :class="{unfinsh:!checkLesson.isDiy}"></span><span :class="{unfinsh:!checkLesson.isFramed}"></span><span :class="{unfinsh:!checkLesson.isDerivative}"></span></p>
       <div class="swiper-container swiper-container-horizontal">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
@@ -47,6 +53,8 @@
 <script>
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
+import { classLessonMap } from '@/api'
+
 let mySwiper = null;
 export default {
   data() {
@@ -55,7 +63,8 @@ export default {
       mySwiper: null,
       activeIndex: 0,
       activeIndexText: ["DIY", "画框装裱", "二次创作"],
-      bgUrl: require("../../asset/image/map/map-bg.png"),
+      lessonMapList: [],
+      checkLesson:{}
     };
   },
   mounted() {
@@ -63,10 +72,17 @@ export default {
       console.log(mySwiper?.activeIndex);
       this.activeIndex = mySwiper?.activeIndex || 0;
     });
+    this.getClassLessonMap()
   },
   methods: {
-    openShow() {
+    getClassLessonMap(){
+      classLessonMap(53,'TWMB20233001').then(res=>{
+        this.lessonMapList = res.object.lessons
+      })
+    },
+    openShow(item) {
       this.show = true;
+      this.checkLesson = item
       this.$nextTick(() => {
         this.initSwiper();
       });
@@ -121,9 +137,23 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "./map.css";
-.bg img {
+.lessonList{
+  position: absolute;
+  p{
+    display: block;
+    img{
+      width: 50px;
+      height: 50px;
+    }
+  }
+  
+}
+.bg{
+  position: relative;
+}
+.bg>img {
   width: 100vw;
-  height: 100vh;
+  height: auto;
 }
 .btndemo {
   position: fixed;
@@ -152,10 +182,12 @@ export default {
     background: url("../../asset/image/icon/shoucang_icon_selected@2x(1).png")
       no-repeat bottom center;
     background-size: 31px 29px;
-    &:nth-child(2) {
-      background: url("../../asset/image/icon/shoucang_icon_selected@2x.png");
-      background-size: 43px 40px;
+    &:nth-child(2){
       margin: 0 32px;
+      background-size: 43px 40px;
+    }
+    &.unfinsh {
+      background-image: url("../../asset/image/icon/shoucang_icon_selected@2x(2).png");
     }
   }
 }

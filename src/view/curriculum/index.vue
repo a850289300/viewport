@@ -163,6 +163,8 @@ export default {
     },
     mounted() {
         this.getClassMessage()
+        this.gethomePageTimeline()
+        this.stuCreationTimeline()
     },
     methods: {
         // 去作品集

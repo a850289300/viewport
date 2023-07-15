@@ -1,30 +1,41 @@
 <template>
     <div class="timeline">
-        <div class="timeline-item" v-for="i in 10" :key="i">
+        <div class="timeline-item" v-for="i in resultList" :key="i.id">
             <div class="box img">
                 <img :src="require('@/asset/image/icon/test2.png')" alt="">
                 <span class="play" @click="toMap"></span>
             </div>
             
             <div class="box text">
-                <p class="title">森林Party森林Party森林Party森林Party森林Party森林Party森林Party森林Party森林Party森林Party森林Party森林Party</p>
-                <p class="updateTime">2023-01-01 10:30</p>
+                <p class="title">{{ i.worksName }}</p>
+                <p class="updateTime">{{ i.updateTime }}</p>
             </div>	
         </div>	
     </div>
 </template>
 <script>
 // import {stuCreationTimeline} from '@/api'
+import { reqStuCreationTimeline } from '@/api'
+
 export default {
     data(){
         return{
-            stuCreationTimelineList:{}
+            resultList:{}
         }
     },
     mounted () {
-        // this.CreationTimeline()
+        this.stuCreationTimeline()
     },
     methods:{
+        async stuCreationTimeline() {
+            let resultList = await reqStuCreationTimeline({
+                studentCode: "LY50351",
+                pageSize: 10, 
+                pageNum: 1
+            })
+            this.resultList = resultList.object.list
+            console.log(this.resultList)
+        },
         toMap(){
             this.$router.push('/map')
         },

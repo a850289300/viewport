@@ -171,8 +171,6 @@ export default {
     }
     
     // 本地不存在这个模板的保存记录 则提示输入名称 年龄等
-    // eslint-disable-next-line no-debugger
-    debugger
     let savedData = JSON.parse(localStorage.getItem(this.id))
     this.popup2 = !savedData?.name
     
@@ -185,6 +183,7 @@ export default {
     async loadImgList(){
       let templateList = await this.$http.get('/myqcloud/koolearn/config/templateList.json')
       let decoration = await this.$http.get('/myqcloud/koolearn/config/decoration.json')
+      // decoration.data[1].images[0].src = require("@/asset/640.gif")
       this.templateList = templateList.data
       this.decoration = decoration.data
     },
@@ -222,8 +221,6 @@ export default {
     },
     // 保存到相册
     saveAlbum() {
-      // eslint-disable-next-line no-debugger
-      // debugger
       const canvas = this.canvas;
       const id = new Date().getTime()
       for (let i in canvas) {
@@ -256,8 +253,6 @@ export default {
         const info = this.getData(canvas[i])
         values[i] = info;
       }
-      // eslint-disable-next-line no-debugger
-      // debugger
       
       const data = {
         id: this.id, // 模板id
@@ -333,14 +328,11 @@ export default {
     },
     // 从缓存中获取数据
     getDataByCache(index) {
-      // eslint-disable-next-line no-debugger
-      // debugger
-      const info = JSON.parse(localStorage.getItem(this.id));
+      const info = JSON.parse(localStorage.getItem(this.id)) || {};
       const sX = this.scaleX; // 整体的缩放比例
       const sY = this.scaleY; // 整体的缩放比例
       const data = info.data || {};
-      
-      
+      if(!data[index]) return
       data[index].forEach(item => {
         const { type, angle } = item;
         const left = item.left * sX;

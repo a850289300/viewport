@@ -48,6 +48,13 @@ module.exports = {
                     '^/api/': ''
                 }
             },
+            '^/uploadApi/': {
+                changeOrigin: true,
+                target: 'https://pre.qpet.eilandtek.com/api/',
+                pathRewrite: {
+                    '^/uploadApi/': ''
+                }
+            },
             '^/koolearn/': {
                 changeOrigin: true,
                 target: 'https://pre-wall-e-1253017550.cos.ap-nanjing.myqcloud.com/koolearn/',

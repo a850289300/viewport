@@ -34,7 +34,7 @@ export default {
 
         },
         getCos () {
-            this.$http.get('/api/v1/util/cos', {
+            this.$http.get('/uploadApi/v1/util/cos', {
                 headers: {
                     Client: 'WALLE'
                 }
