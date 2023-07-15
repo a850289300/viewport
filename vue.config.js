@@ -7,6 +7,7 @@ function resolve(dir) {
 }
 
 module.exports = {
+    lintOnSave: false,
     outputDir: 'dist',
     publicPath: process.env.NODE_ENV === 'production' ? '/vant-demo/' : '/',
     css: {
@@ -42,7 +43,7 @@ module.exports = {
         proxy: {
             '^/api/': {
                 changeOrigin: true,
-                target: 'https://pre.qpet.eilandtek.com/api/',
+                target: 'https://iteach-cdata-api.test.xdf.cn',
                 pathRewrite: {
                     '^/api/': ''
                 }

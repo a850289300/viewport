@@ -6,25 +6,25 @@
         </div>
         <div class="curriculum-info">
             <div class="base-info">
-                <span class="chapter-count">已更新{{chaptersCount}}章</span>
-                <span class="chapter-current">已学习到第{{currentChapter}}章</span>
-                <span class="teacher-name">授课老师：{{teacherName}}</span>
+                <span class="chapter-count">已更新{{ chaptersCount }}章</span>
+                <span class="chapter-current">已学习到第{{ currentChapter }}章</span>
+                <span class="teacher-name">授课老师：{{ teacherName }}</span>
             </div>
             <div class="chapter-info">
-                <span>课程时间：{{courseTime}}</span>
+                <span>课程时间：{{ courseTime }}</span>
             </div>
         </div>
         <div class="curriculum-tab">时光轴</div>
         <div class="curriculum-time-axis">
-            <van-steps direction="vertical" :active="list.length - 1" >
-                <van-step v-for="(item, index) in list" :key="index" >
-                  <div class="list-item" @click="show = true">
-                    <img :src="item.src || require('@/asset/image/icon/test2.png')">
-                    <div class="list-item-info">
-                        <p>{{item.time}}</p>
-                        <p><span class="keynote">{{item.operation}}</span>了{{item.worksType}}《{{item.worksName}}》</p>
+            <van-steps direction="vertical" :active="list.length - 1">
+                <van-step v-for="(item, index) in list" :key="index">
+                    <div class="list-item" @click="show = true">
+                        <img :src="item.src || require('@/asset/image/icon/test2.png')">
+                        <div class="list-item-info">
+                            <p>{{ item.time }}</p>
+                            <p><span class="keynote">{{ item.operation }}</span>了{{ item.worksType }}《{{ item.worksName }}》</p>
+                        </div>
                     </div>
-                  </div>
                 </van-step>
             </van-steps>
         </div>
@@ -34,16 +34,16 @@
         </div>
         <!-- 弹框 -->
         <van-popup class="van-popup-public" v-model="show">
-            <popup-title @goBack="show = false"/>
+            <popup-title @goBack="show = false" />
             <p class="title">小小宇航员</p>
-            <van-image src="/myqcloud/koolearn/template/2-海边度假风/content-10.jpg" radius="10"  width="269" height="377"/>
+            <van-image src="/myqcloud/koolearn/template/2-海边度假风/content-10.jpg" radius="10" width="269" height="377" />
             <span class="btn-small" @click="save">保存相册</span>
-            <popup-share class="share"/>
+            <popup-share class="share" />
         </van-popup>
     </div>
 </template>
 <script>
-
+import { reqgetClassInfo, reqhomePageTimeline, reqStuCreationTimeline } from '@/api'
 export default {
     data() {
         return {
@@ -63,93 +63,106 @@ export default {
                     id: '', // 模板id
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 },
                 {
-                    src: '', 
+                    src: '',
                     time: '2023-01-01 10:30',
                     worksType: '作品集',
                     worksName: '聪明的一休',
                     operation: '创建',
                 }
-            ], // 时间轴数据列表
+            ], // 时间轴数据列表,
+            timeAxisList: [],
+            studentInfo: {
+                studentCode: "zhangsan",
+                pageSize: 10,
+                pageNum: 1
+            },
+            classInfo: {
+                cityId: 1,
+                classCode: "07PG013"
+            }
         }
     },
-    components:{
+    components: {
+    },
+    mounted() {
+        this.getClassMessage()
     },
     methods: {
         // 去作品集
@@ -161,23 +174,44 @@ export default {
             this.$router.push('/timeaxis')
             // this.$router.push('/create')
         },
-        save(){
-            
+        save() {
+
+        },
+        // 课程详情
+        async getClassMessage() {
+          let {object} = await reqgetClassInfo(this.classInfo);
+          console.log(object);
+          let {cityId, cityName, classCode, className, beginDate, endDate} = object;
+          this.courseTime = beginDate + " ~ " + endDate;
+        },
+        // 首页时光轴（分页）
+        async gethomePageTimeline() {
+            this.timeAxisList = await reqhomePageTimeline(this.studentInfo)
+        },
+        // 创作时光轴数据
+        async stuCreationTimeline() {
+            let result = await reqStuCreationTimeline({studentCode: "LY50351",
+            pageSize: 10, pageNum: 1
+        })
+        console.log(result);
         }
     }
 }
 </script>
 <style lang="less" scoped>
 @import './popup.less';
+
 .curriculum-index {
     background: #f5f5f5;
+
     .curriculum-picture {
         height: 174px;
         width: 100%;
         margin: 0 auto;
         background: url('../../asset/image/icon/test.png');
         background-size: 100% 100%;
-        .start{
+
+        .start {
             display: block;
             width: 30vw;
             height: 30px;
@@ -187,31 +221,37 @@ export default {
             margin: 0 auto;
         }
     }
+
     .curriculum-info {
         padding: 9px 16px 27px 16px;
         font-size: 13px;
         background: #f5f5f5;
+
         .base-info {
             margin-top: 0 !important;
             height: 22px;
             line-height: 22px;
-            .course-name {
 
-            }
+            .course-name {}
+
             .teacher-name {
                 color: #b1b1b1;
                 float: right;
             }
+
             margin-top: 1vh;
+
             .chapter-count {
                 color: #333;
                 font-size: 15px;
-            } 
+            }
+
             .chapter-current {
                 margin-left: 20px;
                 color: #F15B38;
             }
         }
+
         .chapter-info {
             margin-top: 1px;
             height: 17px;
@@ -220,12 +260,14 @@ export default {
             font-size: 12px;
         }
     }
-    .curriculum-tab{
+
+    .curriculum-tab {
         height: 20px;
         line-height: 20px;
         background: #f5f5f5;
         margin-bottom: 10px;
-        &:before{
+
+        &:before {
             float: left;
             content: '';
             width: 3px;
@@ -237,58 +279,69 @@ export default {
 
         }
     }
+
     .curriculum-time-axis {
         overflow-y: auto;
         height: calc(100% - 280px);
-        
-        /deep/.van-steps{
+
+        /deep/.van-steps {
             background: transparent;
             padding-bottom: 80px;
-            .van-step__title{
+
+            .van-step__title {
                 background: #ffffff;
-                padding:10px;
+                padding: 10px;
                 height: 68px;
                 border-radius: 5px;
             }
-            .van-step__circle-container{
+
+            .van-step__circle-container {
                 top: 50px;
-                .van-step__circle{
+
+                .van-step__circle {
                     background: #fe724e;
                     width: 6px;
                     height: 6px;
                 }
             }
-            .van-step__line{
+
+            .van-step__line {
                 width: 2px;
                 top: 50px;
                 background: #e3e3e3;
                 left: -16px;
             }
-            .van-step--vertical{
+
+            .van-step--vertical {
                 padding: 8px 16px 8px 7px;
             }
-            .van-step:last-child{
-                .van-step__line{
+
+            .van-step:last-child {
+                .van-step__line {
                     display: none;
                 }
             }
         }
+
         .list-item {
             img {
                 width: 68px;
                 height: 68px;
                 border-radius: 5px;
             }
+
             .list-item-info {
                 display: inline-block;
                 vertical-align: top;
+
                 p {
                     padding: 0 10px;
                     color: #666666;
                     font-size: 12px;
                     font-weight: 400;
                 }
-                p:first-child{
+
+                p:first-child {
                     height: 37px;
                     padding-top: 8px;
                     font-size: 15px;
@@ -296,24 +349,28 @@ export default {
                     color: #333;
 
                 }
+
                 .keynote {
                     // color: red;
                 }
             }
         }
     }
+
     .curriculum-btn {
         text-align: center;
         font-size: 16px;
         position: fixed;
         bottom: 25px;
         width: 100%;
+
         .btn-works {
-           
+
             width: 156px;
             margin-left: 27px;
             float: left;
-            &:first-child{
+
+            &:first-child {
                 margin-left: 18px;
             }
         }
@@ -321,9 +378,7 @@ export default {
     }
 }
 
-.share{
+.share {
     position: fixed;
     bottom: 69px;
-}
-
-</style>
+}</style>

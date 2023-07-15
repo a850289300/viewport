@@ -14,11 +14,23 @@
     </div>
 </template>
 <script>
+// import {stuCreationTimeline} from '@/api'
 export default {
+    data(){
+        return{
+            stuCreationTimelineList:{}
+        }
+    },
+    mounted () {
+        // this.CreationTimeline()
+    },
     methods:{
         toMap(){
             this.$router.push('/map')
-        }
+        },
+        // async CreationTimeline(){
+        //     this.stuCreationTimelineList = await stuCreationTimeline('LY50351','10','1')
+        // }
     }
 }
 </script>

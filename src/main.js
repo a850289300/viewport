@@ -3,6 +3,7 @@ import App from './App';
 import { router } from './router';
 
 import axios from 'axios'
+import store from './store';
 
 import 'vant/lib/index.less';
 import '#/styles/reset.css';
@@ -45,5 +46,6 @@ Vue.component('upload',upload);
 new Vue({
   router,
   el: '#app',
+  store,
   render: h => h(App)
 });
