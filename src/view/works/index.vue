@@ -5,7 +5,7 @@
           <span class="more" @click="resetEdit = true"></span>  
         </div>
         <div class="swipe-box" :style="{width: width + 'px', height: height + 'px'}">
-            <van-swipe @change="changeIndex" :initial-swipe="currentIndex" :touchable="operationType !== 'personality'">
+            <van-swipe @change="changeIndex" :initial-swipe="currentIndex" :stop-propagation="true" >
                 <van-swipe-item v-for="(image, index) in imgList" :key="index">
                     <canvas :id="'canvas-' + index"></canvas>
                     <!-- 利用遮罩层阻止canvas的事件 -->
@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- :style="{width: width + 'px'}" -->
-        <div class="operate-box">
+        <div class="operate-box" v-show="false">
           <span class="operate-box-item col-3" v-if="['personality','edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="save">保存</van-button></span>
           <span class="operate-box-item col-3" v-if="['personality'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="edit">编辑</van-button></span>
           <span class="operate-box-item col-3" v-if="['edit'].includes(operationType)"><van-button class="btn-works" round size="small" color="#49D391" @touchstart="individuation">个性化</van-button></span>
@@ -117,6 +117,8 @@
 </template>
 <script>
 import { fabric } from 'fabric';
+import { reqAddStuProductionSet, reqgetStuProductionSet } from '@/api'
+
 export default {
   data() {
     return {
@@ -172,7 +174,8 @@ export default {
     
     // 本地不存在这个模板的保存记录 则提示输入名称 年龄等
     let savedData = JSON.parse(localStorage.getItem(this.id))
-    this.popup2 = !savedData?.name
+    debugger
+    this.popup2 = !savedData?.worksName
     
     this.$nextTick(()=>{
       this.initProject()
@@ -256,7 +259,14 @@ export default {
       
       const data = {
         id: this.id, // 模板id
-        name: this.projectName, // 作品名称
+        worksName: this.projectName, // 作品名称
+        creatorName: this.name, // 姓名
+        creatorId: 'zhangsan', // 创建人studentCode
+        age: this.age, // 年龄
+        personalSignature: this.sign, // 个性签名
+        tel: '',// 电话
+        operation: '',// 动作描述
+        saveType: '',// 1,自动保存，2，手动保存	
         data: values // 数据
       }
 
@@ -264,6 +274,12 @@ export default {
         data.data = {}
       }
       localStorage.setItem(this.id, JSON.stringify(data));
+      this.saveRequest(data)
+    },
+    saveRequest(data){
+      reqAddStuProductionSet(data).then(res=>{
+        debugger
+      })
     },
     // 编辑
     edit() {
@@ -312,6 +328,8 @@ export default {
         this.imgList.forEach((item, index)=> {
           this.canvas[index] = this.initCanvas(index, this.imgList[index])
         })
+        this.getStuProductionSet()
+
     },
     // 退出
     exit() {
@@ -326,11 +344,20 @@ export default {
       this.popup2 = false;
 
     },
+    // 获取当前作品集的保存数据
+    getStuProductionSet(){
+      reqgetStuProductionSet(1).then(res=>{
+        debugger
+      })
+    },
+    
     // 从缓存中获取数据
     getDataByCache(index) {
       const info = JSON.parse(localStorage.getItem(this.id)) || {};
       const sX = this.scaleX; // 整体的缩放比例
       const sY = this.scaleY; // 整体的缩放比例
+      this.projectName = info.worksName
+      
       const data = info.data || {};
       if(!data[index]) return
       data[index].forEach(item => {
@@ -413,9 +440,10 @@ export default {
           //   stroke: 'black',
           //   angle: 0
           // })
-          this.getDataByCache(index);
+          
         });
       }
+      this.getDataByCache(index);
       // 新增删除控制器
       const deleteImg = document.createElement("img");
       deleteImg.src =

@@ -14,9 +14,9 @@ export const reqhomePageTimeline = (data) => request({
 // 作品集查看详情
 export const reqgetStuProductionSet = (productionSetId,data) => request({
     url:'/art/stuClient/getStuProductionSet',
-    method:'get',
-    params:{productionSetId},
-    data
+    method:'POST',
+    data:{productionSetId},
+    
 })
 // 作品集保存
 export const reqAddStuProductionSet = (data) => request({

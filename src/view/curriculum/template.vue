@@ -37,10 +37,9 @@ export default {
   methods: {
     async loadImgList(){
       let templateList = await this.$http.get('/koolearn/config/templateList.json')
-      let decoration = await this.$http.get('/koolearn/config/decoration.json')
-      debugger
+      
       this.templateList = templateList.data
-      this.decoration = decoration.data
+      
     },
     search() {
       const searchVal = this.searchVal;

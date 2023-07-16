@@ -30,7 +30,7 @@ export default {
         async stuCreationTimeline() {
             let resultList = await reqStuCreationTimeline({
                 studentCode: "LY50351",
-                pageSize: 10, 
+                pageSize: 999, 
                 pageNum: 1
             })
             this.resultList = resultList.object.list
