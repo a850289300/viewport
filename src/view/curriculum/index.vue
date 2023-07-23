@@ -210,7 +210,7 @@ export default {
         height: 174px;
         width: 100%;
         margin: 0 auto;
-        background: url('../../asset/image/icon/test.png');
+        background: url('https://pre-wall-e-1253017550.cos.ap-nanjing.myqcloud.com/koolearn/Banner/Banner.jpg?imageMogr2/format/webp');
         background-size: 100% 100%;
 
         .start {
