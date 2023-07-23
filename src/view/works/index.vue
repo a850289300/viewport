@@ -174,7 +174,7 @@ export default {
     
     // 本地不存在这个模板的保存记录 则提示输入名称 年龄等
     let savedData = JSON.parse(localStorage.getItem(this.id))
-    debugger
+    
     this.popup2 = !savedData?.worksName
     
     this.$nextTick(()=>{
@@ -258,16 +258,17 @@ export default {
       }
       
       const data = {
+        "createTime": new Date().toString(),
         id: this.id, // 模板id
         worksName: this.projectName, // 作品名称
         creatorName: this.name, // 姓名
         creatorId: 'zhangsan', // 创建人studentCode
         age: this.age, // 年龄
         personalSignature: this.sign, // 个性签名
-        tel: '',// 电话
-        operation: '',// 动作描述
-        saveType: '',// 1,自动保存，2，手动保存	
-        data: values // 数据
+        tel: '12345678901',// 电话
+        operation: '修改我的作品',// 动作描述
+        saveType: '2',// 1,自动保存，2，手动保存	
+        data: JSON.stringify(values) // 数据
       }
 
       if(type === 'reset'){
@@ -278,7 +279,7 @@ export default {
     },
     saveRequest(data){
       reqAddStuProductionSet(data).then(res=>{
-        debugger
+        
       })
     },
     // 编辑
@@ -347,7 +348,7 @@ export default {
     // 获取当前作品集的保存数据
     getStuProductionSet(){
       reqgetStuProductionSet(1).then(res=>{
-        debugger
+        
       })
     },
     
@@ -358,8 +359,9 @@ export default {
       const sY = this.scaleY; // 整体的缩放比例
       this.projectName = info.worksName
       
-      const data = info.data || {};
+      const data = JSON.parse(info.data || '[]') || {};
       if(!data[index]) return
+      debugger
       data[index].forEach(item => {
         const { type, angle } = item;
         const left = item.left * sX;
@@ -463,18 +465,35 @@ export default {
 
     // 添加素材
     addDecoration(src) {
-      this.addImg('', src);
+      this.addImg('', src, 'clickTab2');
     },
 
     // 添加图片
     addImg(id, url, data) {
+      debugger
       id = id || this.currentIndex;
       if (url) {
         fabric.Image.fromURL(url, img => {
-          if (data) {
+          if(data === 'clickTab2'){
+            let { left = 0, top = 0, angle = 0 } = data;
+            const scaleX = 100 / img.width;
+            const scaleY = 100 / img.height;
+            img.set({
+              width: img.width,
+              height: img.height,
+              crossOrigin: 'Anonymous',
+              left,
+              top,
+              angle,
+              scaleX,
+              scaleY
+            }); // 拿图片的真实高度
+          }else if (data) {
             let { left = 0, top = 0, angle = 0, width = img.width, height = img.height } = data;
-            const scaleX = width / img.width;
-            const scaleY = height / img.height;
+            const scaleX = width / img.width * this.scaleX;
+            const scaleY = height / img.height * this.scaleY;
+            left = left * this.scaleX;
+            top = top * this.scaleY;
             img.set({
               width: img.width,
               height: img.height,
@@ -538,6 +557,7 @@ export default {
     },
     // 获取数据（矩形旋转后，如果canvas画布变大后，再回显位置错位）
     getData(canvas) {
+      debugger
       const objects = canvas.getObjects();
       const data = [];
       const sX = Number(this.scaleX);
